@@ -153,7 +153,7 @@
   - _Leverage: src/components/ImageProcessor.tsx_
   - _Requirements: 5.1, 5.2_
 
-- [-] 18. Create DotEditPage for editing testing
+- [x] 18. Create DotEditPage for editing testing
   - File: src/pages/DotEditPage.tsx
   - Create isolated dot pattern editing testing interface
   - Add click and range selection validation
@@ -180,7 +180,7 @@
   - _Leverage: React Router, Context API, ErrorBoundary pattern_
   - _Requirements: 5.1, 5.2_
 
-- [ ] 21. Create IntegratedApp page with complete workflow
+- [x] 21. Create IntegratedApp page with complete workflow
   - File: src/pages/IntegratedApp.tsx
   - Integrate all components into unified workflow
   - Add step-by-step user guidance and progress tracking

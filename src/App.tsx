@@ -7,6 +7,7 @@ import { ErrorBoundary } from './components/common/ErrorBoundary'
 import IntegratedApp from './pages/IntegratedApp'
 import ImageLoadPage from './pages/ImageLoadPage'
 import ImageConversionPage from './pages/ImageConversionPage'
+import DotEditPage from './pages/DotEditPage'
 import Model3DPage from './pages/Model3DPage'
 
 import './App.css'
@@ -20,6 +21,7 @@ const DevNavigation: React.FC = () => {
     { path: '/app', label: 'Integrated App', description: 'Complete converter' },
     { path: '/dev/image-load', label: 'Image Load', description: 'File upload testing' },
     { path: '/dev/image-conversion', label: 'Image Conversion', description: 'Image to dot art' },
+    { path: '/dev/dot-edit', label: 'Dot Editor', description: 'Pattern editing testing' },
     { path: '/dev/model-3d', label: '3D Model', description: '3D generation testing' }
   ]
 
@@ -72,6 +74,13 @@ const Home: React.FC = () => {
           <h3>Image Conversion</h3>
           <p>Convert regular images to dot art with threshold and resolution controls</p>
           <Link to="/dev/image-conversion" className="feature-link">Test Conversion →</Link>
+        </div>
+
+        <div className="feature-card">
+          <div className="feature-icon">✏️</div>
+          <h3>Dot Pattern Editor</h3>
+          <p>Interactive editing of dot patterns with click-to-toggle and range selection</p>
+          <Link to="/dev/dot-edit" className="feature-link">Test Editor →</Link>
         </div>
 
         <div className="feature-card">
@@ -146,6 +155,18 @@ function App() {
                           <p>Test image processing, threshold adjustment, and dot art generation</p>
                         </div>
                         <ImageConversionPage />
+                      </div>
+                    } 
+                  />
+                  <Route 
+                    path="/dev/dot-edit" 
+                    element={
+                      <div className="dev-page">
+                        <div className="dev-page-header">
+                          <h2>Dot Pattern Editor Test</h2>
+                          <p>Test interactive dot pattern editing, click-to-toggle, and range selection</p>
+                        </div>
+                        <DotEditPage />
                       </div>
                     } 
                   />

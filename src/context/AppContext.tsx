@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, ReactNode } from 'react'
+import React, { createContext, useContext, useReducer, type ReactNode } from 'react'
 import type { DotPattern, ConversionParams, Model3DParams } from '@/types'
 
 // Define the application state
@@ -52,11 +52,25 @@ export type AppAction =
 
 // Default state
 const getDefaultConversionParams = (): ConversionParams => ({
+  // ImageProcessingParams
+  grayscaleMethod: 'luminance',
   threshold: 128,
+  preBlur: false,
+  blurRadius: 1,
+  enhanceContrast: false,
+  contrastFactor: 1.0,
+  
+  // ResizeParams  
   targetWidth: 50,
   targetHeight: 50,
   maintainAspectRatio: true,
-  invert: false
+  algorithm: 'bilinear',
+  fillColor: '#ffffff',
+  
+  // ConversionParams
+  invert: false,
+  enableDithering: false,
+  ditheringMethod: 'floyd-steinberg'
 })
 
 const getDefaultModel3DParams = (): Model3DParams => ({
@@ -81,7 +95,7 @@ const initialState: AppState = {
   isLoading: false,
   error: null,
   sessionHistory: [],
-  isDevelopmentMode: process.env.NODE_ENV === 'development'
+  isDevelopmentMode: import.meta.env.DEV
 }
 
 // Reducer function

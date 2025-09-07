@@ -1,5 +1,8 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
+import * as THREE from 'three'
 import FileUpload from '@/components/FileUpload'
+import DotEditor from '@/components/DotEditor'
+import Model3D from '@/components/Model3D'
 import { FileService } from '@/services/FileService'
 import { ImageService } from '@/services/ImageService'
 import { DotArtService } from '@/services/DotArtService'
@@ -12,8 +15,11 @@ export const IntegratedApp: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<Step>('upload')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [dotPattern, setDotPattern] = useState<DotPattern | null>(null)
+  const [originalPattern, setOriginalPattern] = useState<DotPattern | null>(null)
   const [isProcessing, setIsProcessing] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
+  const [generatedMesh, setGeneratedMesh] = useState<THREE.Group | null>(null)
 
   // Conversion parameters with defaults
   const [conversionParams, setConversionParams] = useState<ConversionParams>(() => 
@@ -30,6 +36,57 @@ export const IntegratedApp: React.FC = () => {
     Model3DService.getDefaultExportParams()
   )
 
+  // State persistence key
+  const STORAGE_KEY = 'dot-art-3d-converter-state'
+
+  // Load state from localStorage on mount
+  useEffect(() => {
+    try {
+      const savedState = localStorage.getItem(STORAGE_KEY)
+      if (savedState) {
+        const parsed = JSON.parse(savedState)
+        if (parsed.dotPattern) {
+          setDotPattern(parsed.dotPattern)
+          setOriginalPattern(parsed.originalPattern)
+          setCurrentStep(parsed.currentStep || 'edit')
+          setConversionParams(prev => ({ ...prev, ...parsed.conversionParams }))
+          setModel3DParams(prev => ({ ...prev, ...parsed.model3DParams }))
+          setExportParams(prev => ({ ...prev, ...parsed.exportParams }))
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to load saved state:', error)
+    }
+  }, [])
+
+  // Save state to localStorage whenever key state changes
+  useEffect(() => {
+    if (dotPattern) {
+      const stateToSave = {
+        dotPattern,
+        originalPattern,
+        currentStep,
+        conversionParams,
+        model3DParams,
+        exportParams,
+        timestamp: Date.now()
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave))
+    }
+  }, [dotPattern, originalPattern, currentStep, conversionParams, model3DParams, exportParams])
+
+  // Clear saved state
+  const clearSavedState = useCallback(() => {
+    localStorage.removeItem(STORAGE_KEY)
+    setDotPattern(null)
+    setOriginalPattern(null)
+    setSelectedFile(null)
+    setCurrentStep('upload')
+    setHasUnsavedChanges(false)
+    setGeneratedMesh(null)
+    setError(null)
+  }, [])
+
   const handleFileSelect = useCallback(async (file: File) => {
     setSelectedFile(file)
     setError(null)
@@ -40,6 +97,8 @@ export const IntegratedApp: React.FC = () => {
         // Import CSV directly
         const pattern = await DotArtService.importCSV(file)
         setDotPattern(pattern)
+        setOriginalPattern(pattern)
+        setHasUnsavedChanges(false)
         setCurrentStep('edit')
       } else if (FileService.isImage(file)) {
         // Move to conversion step for images
@@ -61,6 +120,8 @@ export const IntegratedApp: React.FC = () => {
     try {
       const pattern = await ImageService.convertToDotsPattern(selectedFile, conversionParams)
       setDotPattern(pattern)
+      setOriginalPattern(pattern)
+      setHasUnsavedChanges(false)
       setCurrentStep('edit')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Conversion failed')
@@ -76,8 +137,7 @@ export const IntegratedApp: React.FC = () => {
     setError(null)
 
     try {
-      const mesh = Model3DService.generateMesh(dotPattern, model3DParams)
-      // Store mesh for export
+      // For now, just move to export step - the Model3D component will handle generation
       setCurrentStep('export')
     } catch (err) {
       setError(err instanceof Error ? err.message : '3D generation failed')
@@ -86,22 +146,32 @@ export const IntegratedApp: React.FC = () => {
     }
   }, [dotPattern, model3DParams])
 
-  const handleExport = useCallback(async () => {
-    if (!dotPattern) return
 
-    setIsProcessing(true)
-    setError(null)
-
-    try {
-      const mesh = Model3DService.generateMesh(dotPattern, model3DParams)
-      const { blob, filename } = Model3DService.exportOBJ(mesh, exportParams)
-      FileService.downloadFile(blob, filename)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Export failed')
-    } finally {
-      setIsProcessing(false)
+  // Handle pattern changes in the editor
+  const handlePatternChange = useCallback((newPattern: DotPattern) => {
+    setDotPattern(newPattern)
+    setHasUnsavedChanges(true)
+    // Clear generated mesh when pattern changes
+    if (generatedMesh) {
+      setGeneratedMesh(null)
     }
-  }, [dotPattern, model3DParams, exportParams])
+  }, [generatedMesh])
+
+  // Save pattern changes
+  const savePatternChanges = useCallback(() => {
+    if (dotPattern) {
+      setOriginalPattern(dotPattern)
+      setHasUnsavedChanges(false)
+    }
+  }, [dotPattern])
+
+  // Revert pattern changes
+  const revertPatternChanges = useCallback(() => {
+    if (originalPattern) {
+      setDotPattern(originalPattern)
+      setHasUnsavedChanges(false)
+    }
+  }, [originalPattern])
 
   const renderStepContent = () => {
     switch (currentStep) {
@@ -193,28 +263,60 @@ export const IntegratedApp: React.FC = () => {
         return (
           <div className="step-content">
             <h2>Step 3: Edit Dot Pattern</h2>
-            {dotPattern && (
+            <div className="edit-header">
               <div className="pattern-info">
-                <p>Pattern Size: {dotPattern.width} x {dotPattern.height}</p>
-                <p>Active Dots: {DotArtService.getPatternStats(dotPattern).activeDots}</p>
-                <p>Fill: {DotArtService.getPatternStats(dotPattern).fillPercentage.toFixed(1)}%</p>
+                {dotPattern && (
+                  <>
+                    <span>Size: {dotPattern.width}×{dotPattern.height}</span>
+                    <span>Active: {DotArtService.getPatternStats(dotPattern).activeDots}</span>
+                    <span>Fill: {DotArtService.getPatternStats(dotPattern).fillPercentage.toFixed(1)}%</span>
+                    {hasUnsavedChanges && <span className="unsaved-indicator">● Unsaved changes</span>}
+                  </>
+                )}
+              </div>
+              <div className="edit-actions">
+                {hasUnsavedChanges && (
+                  <>
+                    <button onClick={savePatternChanges} className="save-button">
+                      ✓ Save Changes
+                    </button>
+                    <button onClick={revertPatternChanges} className="revert-button">
+                      ↶ Revert
+                    </button>
+                  </>
+                )}
+                <button 
+                  onClick={async () => {
+                    if (dotPattern) {
+                      const csvContent = DotArtService.exportCSV(dotPattern)
+                      const blob = FileService.createTextBlob(csvContent, 'text/csv')
+                      FileService.downloadFile(blob, `dot-pattern-${Date.now()}.csv`)
+                    }
+                  }}
+                  className="secondary-button"
+                >
+                  📄 Export CSV
+                </button>
+              </div>
+            </div>
+            
+            {dotPattern && (
+              <div className="editor-container">
+                <DotEditor
+                  pattern={dotPattern}
+                  onPatternChange={handlePatternChange}
+                  onError={setError}
+                />
               </div>
             )}
-            <div className="pattern-actions">
-              <button onClick={() => setCurrentStep('generate3d')} className="primary-button">
-                Generate 3D Model
-              </button>
+            
+            <div className="step-navigation">
               <button 
-                onClick={async () => {
-                  if (dotPattern) {
-                    const csvContent = DotArtService.exportCSV(dotPattern)
-                    const blob = FileService.createTextBlob(csvContent, 'text/csv')
-                    FileService.downloadFile(blob, 'dot-pattern.csv')
-                  }
-                }}
-                className="secondary-button"
+                onClick={() => setCurrentStep('generate3d')} 
+                className="primary-button"
+                disabled={!dotPattern}
               >
-                Export as CSV
+                Continue to 3D Generation →
               </button>
             </div>
           </div>
@@ -288,58 +390,65 @@ export const IntegratedApp: React.FC = () => {
                 </div>
               </div>
             )}
-            <button 
-              onClick={handleGenerate3D} 
-              disabled={isProcessing}
-              className="primary-button"
-            >
-              {isProcessing ? 'Generating...' : 'Generate 3D Model'}
-            </button>
+            <div className="generation-actions">
+              <button 
+                onClick={handleGenerate3D} 
+                disabled={isProcessing}
+                className="primary-button"
+              >
+                {isProcessing ? 'Generating...' : 'Preview 3D Model'}
+              </button>
+            </div>
+            
+            <div className="step-navigation">
+              <button 
+                onClick={() => setCurrentStep('export')}
+                className="primary-button"
+                disabled={!dotPattern}
+              >
+                Continue to Export →
+              </button>
+            </div>
           </div>
         )
 
       case 'export':
         return (
           <div className="step-content">
-            <h2>Step 5: Export 3D Model</h2>
-            <div className="export-controls">
-              <div className="param-group">
-                <label>
-                  Filename: 
-                  <input 
-                    type="text" 
-                    value={exportParams.filename} 
-                    onChange={(e) => setExportParams(prev => ({
-                      ...prev, 
-                      filename: e.target.value || 'dot-art-model'
-                    }))}
-                  />
-                </label>
-              </div>
-              <div className="param-group">
-                <label>
-                  Scale Factor: 
-                  <input 
-                    type="number" 
-                    step="0.1" 
-                    value={exportParams.scaleFactor} 
-                    onChange={(e) => setExportParams(prev => ({
-                      ...prev, 
-                      scaleFactor: parseFloat(e.target.value) || 1.0
-                    }))}
-                    min="0.1" 
-                    max="10" 
-                  />
-                </label>
-              </div>
+            <h2>Step 5: Generate and Export 3D Model</h2>
+            <div className="export-instructions">
+              <p>
+                Generate your 3D model with the current dot pattern and export it as an OBJ file
+                ready for 3D printing.
+              </p>
             </div>
-            <button 
-              onClick={handleExport} 
-              disabled={isProcessing}
-              className="primary-button"
-            >
-              {isProcessing ? 'Exporting...' : 'Download OBJ File'}
-            </button>
+            
+            {dotPattern && (
+              <div className="model-generator">
+                <Model3D
+                  pattern={dotPattern}
+                  onExportComplete={(blob, filename) => {
+                    FileService.downloadFile(blob, filename)
+                  }}
+                  onError={setError}
+                />
+              </div>
+            )}
+            
+            <div className="export-actions">
+              <button 
+                onClick={() => {
+                  if (hasUnsavedChanges) {
+                    const confirmRestart = confirm('You have unsaved changes. Are you sure you want to start over?')
+                    if (!confirmRestart) return
+                  }
+                  clearSavedState()
+                }}
+                className="secondary-button"
+              >
+                🏠 Start New Project
+              </button>
+            </div>
           </div>
         )
 
@@ -351,16 +460,16 @@ export const IntegratedApp: React.FC = () => {
   return (
     <div className="integrated-app">
       <div className="workflow-steps">
-        <div className={`step ${currentStep === 'upload' ? 'active' : ''} ${selectedFile ? 'completed' : ''}`}>
+        <div className={`step ${currentStep === 'upload' ? 'active' : ''} ${selectedFile && (currentStep !== 'upload') ? 'completed' : ''}`}>
           1. Upload
         </div>
-        <div className={`step ${currentStep === 'convert' ? 'active' : ''} ${currentStep !== 'upload' && currentStep !== 'convert' ? 'completed' : ''}`}>
+        <div className={`step ${currentStep === 'convert' ? 'active' : ''} ${dotPattern && currentStep !== 'upload' && currentStep !== 'convert' ? 'completed' : ''}`}>
           2. Convert
         </div>
-        <div className={`step ${currentStep === 'edit' ? 'active' : ''} ${dotPattern ? 'completed' : ''}`}>
+        <div className={`step ${currentStep === 'edit' ? 'active' : ''} ${dotPattern && currentStep !== 'upload' && currentStep !== 'convert' && currentStep !== 'edit' ? 'completed' : ''}`}>
           3. Edit
         </div>
-        <div className={`step ${currentStep === 'generate3d' ? 'active' : ''}`}>
+        <div className={`step ${currentStep === 'generate3d' ? 'active' : ''} ${currentStep === 'export' ? 'completed' : ''}`}>
           4. Generate 3D
         </div>
         <div className={`step ${currentStep === 'export' ? 'active' : ''}`}>
@@ -397,10 +506,11 @@ export const IntegratedApp: React.FC = () => {
         
         <button 
           onClick={() => {
-            setCurrentStep('upload')
-            setSelectedFile(null)
-            setDotPattern(null)
-            setError(null)
+            if (hasUnsavedChanges) {
+              const confirmRestart = confirm('You have unsaved changes. Are you sure you want to start over?')
+              if (!confirmRestart) return
+            }
+            clearSavedState()
           }}
           className="nav-button"
         >

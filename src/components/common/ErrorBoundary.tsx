@@ -1,4 +1,4 @@
-import React, { Component, ReactNode } from 'react'
+import React, { Component, type ReactNode } from 'react'
 
 interface Props {
   children: ReactNode
@@ -25,9 +25,9 @@ export class ErrorBoundary extends Component<Props, State> {
     }
   }
 
-  componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
+  override componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Log error to console in development
-    if (process.env.NODE_ENV === 'development') {
+    if (import.meta.env.DEV) {
       console.error('ErrorBoundary caught an error:', error, errorInfo)
     }
 
@@ -49,7 +49,7 @@ export class ErrorBoundary extends Component<Props, State> {
     })
   }
 
-  render() {
+  override render() {
     if (this.state.hasError) {
       // If a fallback is provided, use it
       if (this.props.fallback) {
@@ -64,7 +64,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <h2>Something went wrong</h2>
             <p>An unexpected error occurred in the application.</p>
             
-            {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
               <details className="error-details">
                 <summary>Error Details (Development Mode)</summary>
                 <div className="error-message">
