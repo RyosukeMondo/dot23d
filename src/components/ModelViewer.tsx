@@ -181,9 +181,9 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({
       // Calculate mesh statistics
       const stats = Model3DService.getMeshStats(mesh)
       setMeshStats({
-        vertices: stats.vertices,
-        faces: stats.faces,
-        activeDots: stats.activeDots
+        vertices: stats.vertexCount,
+        faces: stats.faceCount,
+        activeDots: stats.cubeCount
       })
 
     } catch (error) {
@@ -391,7 +391,7 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({
         </ul>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes spin {
           0% { transform: rotate(0deg); }
           100% { transform: rotate(360deg); }
