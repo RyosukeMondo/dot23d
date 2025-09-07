@@ -1,0 +1,48 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.App-header {
+  background-color: #282c34;
+  padding: 1rem;
+  color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.App-header h1 {
+  margin: 0 0 1rem 0;
+  font-size: 1.8rem;
+}
+
+.App-header nav a {
+  color: #61dafb;
+  text-decoration: none;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.App-header nav a:hover {
+  background-color: rgba(97, 218, 251, 0.1);
+}
+
+main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+h2 {
+  color: #282c34;
+  margin-bottom: 1rem;
+}
+
+p {
+  line-height: 1.6;
+  color: #666;
+}
