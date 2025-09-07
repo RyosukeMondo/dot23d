@@ -118,11 +118,19 @@ export const IntegratedApp: React.FC = () => {
     setError(null)
 
     try {
-      const pattern = await ImageService.convertToDotsPattern(selectedFile, conversionParams)
-      setDotPattern(pattern)
-      setOriginalPattern(pattern)
-      setHasUnsavedChanges(false)
-      setCurrentStep('edit')
+      const result = await ImageService.convertToDotsPattern(selectedFile, conversionParams)
+      
+      if (result.error) {
+        setError(`Pattern generation failed: ${result.error.userMessage || result.error.message}`)
+        return
+      }
+      
+      if (result.data) {
+        setDotPattern(result.data)
+        setOriginalPattern(result.data)
+        setHasUnsavedChanges(false)
+        setCurrentStep('edit')
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Conversion failed')
     } finally {

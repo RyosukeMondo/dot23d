@@ -140,7 +140,17 @@ export const ImageConversionPage: React.FC = () => {
 
         const startTime = Date.now()
 
-        const pattern = await ImageService.convertToDotsPattern(selectedFile, testParams)
+        const result = await ImageService.convertToDotsPattern(selectedFile, testParams)
+        
+        if (result.error) {
+          handleError(`Pattern generation failed: ${result.error.userMessage || result.error.message}`)
+          return
+        }
+        
+        if (!result.data) {
+          handleError('No pattern data returned')
+          return
+        }
 
         const endTime = Date.now()
         const processingTime = endTime - startTime
@@ -150,7 +160,7 @@ export const ImageConversionPage: React.FC = () => {
           file: selectedFile,
           timestamp: new Date(startTime),
           originalParams: testParams,
-          resultPattern: pattern,
+          resultPattern: result.data,
           processingTime,
           success: true,
           notes: `Benchmark: ${preset.name} - ${preset.description}`

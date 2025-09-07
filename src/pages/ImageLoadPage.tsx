@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo } from 'react'
 import { FileUpload } from '@/components/FileUpload'
 import { FileService } from '@/services/FileService'
 import { DotArtService } from '@/services/DotArtService'
-import { parseCSV } from '@/utils/CSVParser'
+import { parseCSVContent } from '@/utils/CSVParser'
 import type { DotPattern } from '@/types'
 
 interface ParsedData {
@@ -74,11 +74,19 @@ export const ImageLoadPage: React.FC = () => {
     setProcessingStage('Reading CSV file...')
     
     try {
-      const content = await FileService.readFileAsText(file)
+      const result = await FileService.readFileAsText(file)
+      
+      if (result.error) {
+        throw new Error(result.error.userMessage || result.error.message)
+      }
+      
+      if (!result.data) {
+        throw new Error('Failed to read file content')
+      }
       
       setProcessingStage('Parsing CSV data...')
       
-      const dotPattern = parseCSV(content)
+      const dotPattern = parseCSVContent(result.data)
       
       parsedData.details.dimensions = {
         width: dotPattern.width,

@@ -29,17 +29,25 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
     const loadImage = async () => {
       try {
         setIsProcessing(true)
-        const imageData = await ImageService.loadImage(file)
-        setOriginalImage(imageData)
+        const result = await ImageService.loadImage(file)
         
-        // Draw original image to canvas
-        if (originalCanvasRef.current) {
-          const canvas = originalCanvasRef.current
-          const ctx = canvas.getContext('2d')
-          if (ctx) {
-            canvas.width = imageData.width
-            canvas.height = imageData.height
-            ctx.putImageData(imageData, 0, 0)
+        if (result.error) {
+          onError(`Failed to load image: ${result.error.userMessage || result.error.message}`)
+          return
+        }
+        
+        if (result.data) {
+          setOriginalImage(result.data)
+          
+          // Draw original image to canvas
+          if (originalCanvasRef.current) {
+            const canvas = originalCanvasRef.current
+            const ctx = canvas.getContext('2d')
+            if (ctx) {
+              canvas.width = result.data.width
+              canvas.height = result.data.height
+              ctx.putImageData(result.data, 0, 0)
+            }
           }
         }
       } catch (error) {
@@ -89,8 +97,16 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
         }
         
         // Generate dot pattern preview
-        const pattern = await ImageService.convertToDotsPattern(file, conversionParams)
-        drawDotPatternPreview(pattern)
+        const result = await ImageService.convertToDotsPattern(file, conversionParams)
+        
+        if (result.error) {
+          onError(`Pattern generation failed: ${result.error.userMessage || result.error.message}`)
+          return
+        }
+        
+        if (result.data) {
+          drawDotPatternPreview(result.data)
+        }
         
       } catch (error) {
         onError(`Processing failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
@@ -140,8 +156,16 @@ export const ImageProcessor: React.FC<ImageProcessorProps> = ({
 
     try {
       setIsProcessing(true)
-      const pattern = await ImageService.convertToDotsPattern(file, conversionParams)
-      onPatternGenerated(pattern)
+      const result = await ImageService.convertToDotsPattern(file, conversionParams)
+      
+      if (result.error) {
+        onError(`Pattern generation failed: ${result.error.userMessage || result.error.message}`)
+        return
+      }
+      
+      if (result.data) {
+        onPatternGenerated(result.data)
+      }
     } catch (error) {
       onError(`Pattern generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
     } finally {

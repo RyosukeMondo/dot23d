@@ -1,4 +1,5 @@
 import type { ValidationResult } from '@/types'
+import { withErrorHandling, withSyncErrorHandling, ErrorHandler, ErrorCategory } from '@/utils/errorHandler'
 
 /**
  * Error class for file operations
@@ -85,81 +86,115 @@ export class FileService {
   }
   
   /**
-   * Upload and validate file
+   * Upload and validate file with comprehensive error handling
    */
-  static async uploadFile(file: File, options: Partial<FileValidationOptions> = {}): Promise<File> {
-    // Validate the file
-    const validation = this.validateFile(file, options)
-    
-    if (!validation.isValid) {
-      throw new FileServiceError(
-        `File validation failed: ${validation.errors.join(', ')}`,
-        'VALIDATION_FAILED'
-      )
-    }
-    
-    // Log warnings if any
-    if (validation.warnings.length > 0) {
-      console.warn('File upload warnings:', validation.warnings)
-    }
-    
-    return file
-  }
-  
-  /**
-   * Create download for blob data
-   */
-  static downloadFile(blob: Blob, filename: string): void {
-    try {
-      // Create download URL
-      const url = URL.createObjectURL(blob)
-      
-      // Create temporary download link
-      const link = document.createElement('a')
-      link.href = url
-      link.download = filename
-      link.style.display = 'none'
-      
-      // Trigger download
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      
-      // Clean up URL
-      setTimeout(() => {
-        URL.revokeObjectURL(url)
-      }, 100)
-      
-    } catch (error) {
-      throw new FileServiceError(
-        `Failed to download file: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        'DOWNLOAD_FAILED'
-      )
-    }
-  }
-  
-  /**
-   * Read file as text
-   */
-  static async readFileAsText(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader()
-      
-      reader.onload = (event) => {
-        const result = event.target?.result
-        if (typeof result === 'string') {
-          resolve(result)
-        } else {
-          reject(new FileServiceError('Failed to read file as text', 'READ_FAILED'))
+  static async uploadFile(file: File, options: Partial<FileValidationOptions> = {}): Promise<{ data?: File; error?: any }> {
+    return await withErrorHandling(
+      async () => {
+        // Validate the file
+        const validation = this.validateFile(file, options)
+        
+        if (!validation.isValid) {
+          throw new FileServiceError(
+            `File validation failed: ${validation.errors.join(', ')}`,
+            'VALIDATION_FAILED'
+          )
+        }
+        
+        // Log warnings if any
+        if (validation.warnings.length > 0) {
+          console.warn('File upload warnings:', validation.warnings)
+        }
+        
+        return file
+      },
+      {
+        component: 'FileService',
+        action: 'uploadFile',
+        metadata: { 
+          fileName: file.name, 
+          fileSize: file.size, 
+          fileType: file.type 
         }
       }
-      
-      reader.onerror = () => {
-        reject(new FileServiceError('File reader error', 'READ_ERROR'))
+    )
+  }
+  
+  /**
+   * Create download for blob data with error handling
+   */
+  static downloadFile(blob: Blob, filename: string): { error?: any } {
+    const result = withSyncErrorHandling(
+      () => {
+        // Create download URL
+        const url = URL.createObjectURL(blob)
+        
+        // Create temporary download link
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        link.style.display = 'none'
+        
+        // Trigger download
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+        
+        // Clean up URL
+        setTimeout(() => {
+          URL.revokeObjectURL(url)
+        }, 100)
+      },
+      {
+        component: 'FileService',
+        action: 'downloadFile',
+        metadata: { 
+          filename,
+          blobSize: blob.size,
+          blobType: blob.type
+        }
       }
-      
-      reader.readAsText(file)
-    })
+    )
+    
+    if (result.error) {
+      return { error: result.error }
+    }
+    
+    return {}
+  }
+  
+  /**
+   * Read file as text with comprehensive error handling
+   */
+  static async readFileAsText(file: File): Promise<{ data?: string; error?: any }> {
+    return await withErrorHandling(
+      () => new Promise<string>((resolve, reject) => {
+        const reader = new FileReader()
+        
+        reader.onload = (event) => {
+          const result = event.target?.result
+          if (typeof result === 'string') {
+            resolve(result)
+          } else {
+            reject(new FileServiceError('Failed to read file as text', 'READ_FAILED'))
+          }
+        }
+        
+        reader.onerror = () => {
+          reject(new FileServiceError('File reader error', 'READ_ERROR'))
+        }
+        
+        reader.readAsText(file)
+      }),
+      {
+        component: 'FileService',
+        action: 'readFileAsText',
+        metadata: { 
+          fileName: file.name, 
+          fileSize: file.size 
+        }
+      }
+    )
   }
   
   /**

@@ -1,34 +1,50 @@
 import { ImageConverter, ImageProcessingError } from '@/utils/ImageConverter'
 import type { DotPattern, ConversionParams } from '@/types'
+import { withErrorHandling, ErrorHandler } from '@/utils/errorHandler'
 
 /**
  * Service for image processing operations
  */
 export class ImageService {
   /**
-   * Load image from file and get ImageData
+   * Load image from file and get ImageData with error handling
    */
-  static async loadImage(file: File): Promise<ImageData> {
-    try {
-      return await ImageConverter.loadImage(file)
-    } catch (error) {
-      throw new ImageProcessingError(
-        `Failed to load image: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
-    }
+  static async loadImage(file: File): Promise<{ data?: ImageData; error?: any }> {
+    return await withErrorHandling(
+      async () => {
+        return await ImageConverter.loadImage(file)
+      },
+      {
+        component: 'ImageService',
+        action: 'loadImage',
+        metadata: { 
+          fileName: file.name, 
+          fileSize: file.size, 
+          fileType: file.type 
+        }
+      }
+    )
   }
   
   /**
-   * Convert image file to dot pattern with given parameters
+   * Convert image file to dot pattern with given parameters and error handling
    */
-  static async convertToDotsPattern(file: File, params: ConversionParams): Promise<DotPattern> {
-    try {
-      return await ImageConverter.convertImageToDotPattern(file, params)
-    } catch (error) {
-      throw new ImageProcessingError(
-        `Image conversion failed: ${error instanceof Error ? error.message : 'Unknown error'}`
-      )
-    }
+  static async convertToDotsPattern(file: File, params: ConversionParams): Promise<{ data?: DotPattern; error?: any }> {
+    return await withErrorHandling(
+      async () => {
+        return await ImageConverter.convertImageToDotPattern(file, params)
+      },
+      {
+        component: 'ImageService',
+        action: 'convertToDotsPattern',
+        metadata: { 
+          fileName: file.name, 
+          conversionParams: params,
+          targetWidth: params.targetWidth,
+          targetHeight: params.targetHeight
+        }
+      }
+    )
   }
   
   /**
