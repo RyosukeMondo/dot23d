@@ -208,15 +208,20 @@ export class DotArtService {
       newData.push(row)
     }
     
-    return {
+    const newPattern: DotPattern = {
       data: newData,
       width: newWidth,
-      height: newHeight,
-      metadata: {
+      height: newHeight
+    }
+    
+    if (pattern.metadata) {
+      newPattern.metadata = {
         ...pattern.metadata,
         modifiedAt: new Date()
       }
     }
+    
+    return newPattern
   }
   
   /**

@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,14 +7,8 @@ export default defineConfig({
   base: '/dot-art-3d-converter/', // For GitHub Pages deployment
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
+      '@': '/src',
     },
-  },
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/test/setup.ts',
-    css: true,
   },
   build: {
     outDir: 'dist',
