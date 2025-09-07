@@ -27,7 +27,7 @@
   - _Leverage: File API, built-in CSV parsing techniques_
   - _Requirements: 1.1, 1.3_
 
-- [ ] 4. Create image processing utilities
+- [x] 4. Create image processing utilities
   - File: src/utils/ImageConverter.ts
   - Implement convertToGreyscale for image processing
   - Add applyThreshold for binary conversion with adjustable threshold
