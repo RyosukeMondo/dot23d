@@ -10,7 +10,6 @@ import ImageConversionPage from './pages/ImageConversionPage'
 import DotEditPage from './pages/DotEditPage'
 import Model3DPage from './pages/Model3DPage'
 
-import './App.css'
 
 // Development navigation component
 const DevNavigation: React.FC = () => {
@@ -54,8 +53,8 @@ const Home: React.FC = () => {
   return (
     <div className="home-page">
       <div className="hero-section">
-        <h1>Dot Art 3D Converter</h1>
-        <p className="hero-description">
+        <h1 className="hero-title">Dot Art 3D Converter</h1>
+        <p className="hero-subtitle">
           Transform monochrome dot art patterns and images into downloadable 3D models 
           ready for 3D printing. Create physical representations of your digital pixel art.
         </p>
@@ -64,42 +63,42 @@ const Home: React.FC = () => {
       <div className="feature-grid">
         <div className="feature-card">
           <div className="feature-icon">📁</div>
-          <h3>Upload & Parse</h3>
-          <p>Upload CSV dot art files or images and parse them into dot patterns</p>
+          <h3 className="feature-title">Upload & Parse</h3>
+          <p className="feature-description">Upload CSV dot art files or images and parse them into dot patterns</p>
           <Link to="/dev/image-load" className="feature-link">Test Upload →</Link>
         </div>
 
         <div className="feature-card">
           <div className="feature-icon">🖼️</div>
-          <h3>Image Conversion</h3>
-          <p>Convert regular images to dot art with threshold and resolution controls</p>
+          <h3 className="feature-title">Image Conversion</h3>
+          <p className="feature-description">Convert regular images to dot art with threshold and resolution controls</p>
           <Link to="/dev/image-conversion" className="feature-link">Test Conversion →</Link>
         </div>
 
         <div className="feature-card">
           <div className="feature-icon">✏️</div>
-          <h3>Dot Pattern Editor</h3>
-          <p>Interactive editing of dot patterns with click-to-toggle and range selection</p>
+          <h3 className="feature-title">Dot Pattern Editor</h3>
+          <p className="feature-description">Interactive editing of dot patterns with click-to-toggle and range selection</p>
           <Link to="/dev/dot-edit" className="feature-link">Test Editor →</Link>
         </div>
 
         <div className="feature-card">
           <div className="feature-icon">🎯</div>
-          <h3>3D Generation</h3>
-          <p>Generate optimized 3D meshes from dot patterns with custom parameters</p>
+          <h3 className="feature-title">3D Generation</h3>
+          <p className="feature-description">Generate optimized 3D meshes from dot patterns with custom parameters</p>
           <Link to="/dev/model-3d" className="feature-link">Test 3D Generation →</Link>
         </div>
 
         <div className="feature-card">
           <div className="feature-icon">🚀</div>
-          <h3>Complete App</h3>
-          <p>Use the fully integrated application for the complete workflow</p>
+          <h3 className="feature-title">Complete App</h3>
+          <p className="feature-description">Use the fully integrated application for the complete workflow</p>
           <Link to="/app" className="feature-link">Launch App →</Link>
         </div>
       </div>
 
       <div className="development-info">
-        <h2>Development Mode</h2>
+        <h2 className="section-title">Development Mode</h2>
         <p>
           This application is built with modular development pages that allow independent 
           testing of each feature. Use the navigation above to access different components 
@@ -107,7 +106,7 @@ const Home: React.FC = () => {
         </p>
         
         <div className="tech-stack">
-          <h3>Technology Stack</h3>
+          <h3 className="feature-title">Technology Stack</h3>
           <div className="tech-list">
             <span className="tech-item">React 18</span>
             <span className="tech-item">TypeScript</span>
@@ -127,7 +126,7 @@ function App() {
     <ErrorBoundary>
       <AppProvider>
         <Router basename="/dot-art-3d-converter">
-          <div className="App">
+          <div className="main-layout">
             <DevNavigation />
             <main className="main-content">
               <ErrorBoundary>
