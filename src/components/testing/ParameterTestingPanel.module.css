@@ -1,0 +1,451 @@
+.parameterTestingPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.titleSection {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+}
+
+.patternInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+}
+
+.patternPreview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--primary-color);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 4px;
+}
+
+.patternDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.patternSize {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.dotCount {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Tab Navigation */
+.tabNavigation {
+  display: flex;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+
+.tabButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tabButton:hover {
+  background: var(--hover-color);
+}
+
+.tabButton.active {
+  border-bottom-color: var(--primary-color);
+  background: var(--background-color);
+}
+
+.tabIcon {
+  font-size: 1rem;
+}
+
+.tabLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.tabButton.active .tabLabel {
+  color: var(--primary-color);
+}
+
+.tabBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 0 6px;
+}
+
+/* Tab Content */
+.tabContent {
+  flex: 1;
+  overflow: hidden;
+}
+
+.tabPanel {
+  height: 100%;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Recommendations Panel */
+.recommendationsPanel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.recommendationsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.recommendationsHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.refreshButton {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.refreshButton:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.refreshButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+/* Recommendations List */
+.recommendationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.recommendationCard {
+  padding: 20px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.recommendationCard.performance {
+  border-left-color: var(--success-color);
+}
+
+.recommendationCard.quality {
+  border-left-color: var(--warning-color);
+}
+
+.recommendationCard.compatibility {
+  border-left-color: var(--info-color);
+}
+
+.recommendationHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+
+.recommendationTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.parameterName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.impactBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.confidenceBar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 120px;
+}
+
+.confidenceBar {
+  position: relative;
+  width: 80px;
+  height: 6px;
+  background: var(--background-secondary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.confidenceFill {
+  height: 100%;
+  background: var(--success-color);
+  transition: width 0.3s ease;
+}
+
+.confidenceLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.recommendationContent {
+  margin-bottom: 16px;
+}
+
+.valueChange {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 0.875rem;
+}
+
+.currentValue {
+  color: var(--text-secondary);
+}
+
+.arrow {
+  color: var(--text-secondary);
+}
+
+.recommendedValue {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.recommendationReason {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.recommendationActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.applyButton {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.applyButton:hover {
+  background: var(--primary-hover);
+}
+
+/* History Stats */
+.historyStats {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border-color);
+}
+
+.historyStats h4 {
+  margin: 0 0 16px 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+  background: var(--background-secondary);
+  border-radius: 6px;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 4px;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .tabNavigation {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tabButton {
+    padding: 12px 16px;
+  }
+
+  .tabPanel {
+    padding: 16px;
+  }
+
+  .recommendationHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .valueChange {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .arrow {
+    transform: rotate(90deg);
+  }
+
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+  }
+
+  .tabButton {
+    padding: 10px 12px;
+  }
+
+  .tabLabel {
+    display: none;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
