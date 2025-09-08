@@ -1,0 +1,618 @@
+.testStatistics {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #24292f;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sessionSelector,
+.timeRangeSelector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sessionSelector label,
+.timeRangeSelector label {
+  font-size: 14px;
+  color: #656d76;
+  font-weight: 500;
+}
+
+.sessionSelect,
+.timeRangeSelect {
+  padding: 4px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  min-width: 120px;
+}
+
+.exportButton {
+  padding: 6px 12px;
+  background: #0969da;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.exportButton:hover {
+  background: #0860ca;
+}
+
+.lastUpdated {
+  padding: 8px 16px;
+  background: #f6f8fa;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+  color: #656d76;
+}
+
+.loading,
+.noData {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: #8b949e;
+  padding: 32px;
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #e0e0e0;
+  border-top-color: #0969da;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.overviewStats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.statValue {
+  font-size: 32px;
+  font-weight: 700;
+  color: #24292f;
+  margin-bottom: 4px;
+}
+
+.statValue.excellent {
+  color: #2da44e;
+}
+
+.statValue.good {
+  color: #0969da;
+}
+
+.statValue.warning {
+  color: #bf8700;
+}
+
+.statValue.poor {
+  color: #cf222e;
+}
+
+.statLabel {
+  font-size: 12px;
+  color: #656d76;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-align: center;
+}
+
+.qualityDistribution {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.qualityDistribution h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.distributionChart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.distributionBar {
+  display: grid;
+  grid-template-columns: 120px 1fr 80px;
+  align-items: center;
+  gap: 12px;
+}
+
+.distributionLabel {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.distributionDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.distributionDot.excellent {
+  background: #2da44e;
+}
+
+.distributionDot.good {
+  background: #0969da;
+}
+
+.distributionDot.fair {
+  background: #bf8700;
+}
+
+.distributionDot.poor {
+  background: #cf222e;
+}
+
+.distributionProgress {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.distributionFill {
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.distributionFill.excellent {
+  background: #2da44e;
+}
+
+.distributionFill.good {
+  background: #0969da;
+}
+
+.distributionFill.fair {
+  background: #bf8700;
+}
+
+.distributionFill.poor {
+  background: #cf222e;
+}
+
+.distributionValue {
+  font-size: 12px;
+  font-weight: 500;
+  color: #656d76;
+  text-align: right;
+}
+
+.failureAnalysis {
+  background: #fff5f5;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #fecaca;
+}
+
+.failureAnalysis h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.failureList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.failureItem {
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #f0f0f0;
+}
+
+.failureHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.failureRank {
+  width: 24px;
+  height: 24px;
+  background: #cf222e;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.failureReason {
+  font-weight: 600;
+  color: #24292f;
+  flex: 1;
+}
+
+.failureCount {
+  font-size: 12px;
+  color: #656d76;
+  font-weight: 500;
+}
+
+.failureExamples {
+  font-size: 12px;
+  color: #656d76;
+  margin-left: 36px;
+}
+
+.trendsChart {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.trendsChart h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.chartContainer {
+  height: 200px;
+  overflow: hidden;
+}
+
+.chart {
+  width: 100%;
+  height: 100%;
+}
+
+.chartPlaceholder {
+  font-size: 14px;
+  fill: #8b949e;
+  font-style: italic;
+}
+
+.performanceMetrics {
+  background: #f0f9ff;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #bfdbfe;
+}
+
+.performanceMetrics h4 {
+  margin: 0 0 16px 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.metricItem {
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.metricLabel {
+  font-size: 11px;
+  color: #656d76;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.metricValue {
+  font-size: 18px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .sessionSelector,
+  .timeRangeSelector {
+    justify-content: space-between;
+  }
+  
+  .overviewStats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .statCard {
+    padding: 16px;
+  }
+  
+  .statValue {
+    font-size: 24px;
+  }
+  
+  .distributionBar {
+    grid-template-columns: 100px 1fr 70px;
+    gap: 8px;
+  }
+  
+  .failureHeader {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .metricsGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content {
+    padding: 12px;
+    gap: 16px;
+  }
+  
+  .overviewStats {
+    grid-template-columns: 1fr;
+  }
+  
+  .statCard {
+    padding: 12px;
+  }
+  
+  .statValue {
+    font-size: 20px;
+  }
+  
+  .distributionBar {
+    grid-template-columns: 80px 1fr 60px;
+  }
+  
+  .distributionLabel {
+    font-size: 12px;
+  }
+  
+  .failureExamples {
+    margin-left: 0;
+    margin-top: 6px;
+  }
+  
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .testStatistics {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+  
+  .header {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .header h3 {
+    color: #e6edf3;
+  }
+  
+  .sessionSelector label,
+  .timeRangeSelector label {
+    color: #8b949e;
+  }
+  
+  .sessionSelect,
+  .timeRangeSelect {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .exportButton {
+    background: #238636;
+  }
+  
+  .exportButton:hover {
+    background: #2ea043;
+  }
+  
+  .lastUpdated {
+    background: #161b22;
+    border-color: #30363d;
+    color: #8b949e;
+  }
+  
+  .statCard {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .statValue {
+    color: #e6edf3;
+  }
+  
+  .statLabel {
+    color: #8b949e;
+  }
+  
+  .qualityDistribution {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .qualityDistribution h4 {
+    color: #e6edf3;
+  }
+  
+  .distributionLabel {
+    color: #e6edf3;
+  }
+  
+  .distributionProgress {
+    background: #30363d;
+  }
+  
+  .distributionValue {
+    color: #8b949e;
+  }
+  
+  .failureAnalysis {
+    background: #2d1b1f;
+    border-color: #8e1a1a;
+  }
+  
+  .failureAnalysis h4 {
+    color: #e6edf3;
+  }
+  
+  .failureItem {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  
+  .failureReason {
+    color: #e6edf3;
+  }
+  
+  .failureCount {
+    color: #8b949e;
+  }
+  
+  .failureExamples {
+    color: #8b949e;
+  }
+  
+  .trendsChart {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .trendsChart h4 {
+    color: #e6edf3;
+  }
+  
+  .chartPlaceholder {
+    fill: #8b949e;
+  }
+  
+  .performanceMetrics {
+    background: #0c1929;
+    border-color: #1f6feb;
+  }
+  
+  .performanceMetrics h4 {
+    color: #e6edf3;
+  }
+  
+  .metricItem {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  
+  .metricLabel {
+    color: #8b949e;
+  }
+  
+  .metricValue {
+    color: #e6edf3;
+  }
+  
+  .loading,
+  .noData {
+    color: #8b949e;
+  }
+  
+  .spinner {
+    border-color: #30363d;
+    border-top-color: #58a6ff;
+  }
+}
