@@ -1,0 +1,514 @@
+.parameterPresets {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #24292f;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.categorySelect,
+.sortSelect {
+  padding: 6px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.actions {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.createButton {
+  padding: 8px 16px;
+  border: 1px solid #2da44e;
+  border-radius: 4px;
+  background: #2da44e;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.createButton:hover:not(:disabled) {
+  background: #2c974b;
+}
+
+.createButton:disabled {
+  background: #8b949e;
+  border-color: #8b949e;
+  cursor: not-allowed;
+}
+
+.createForm {
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.createForm h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.formRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  padding: 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.formInput {
+  flex: 1;
+}
+
+.formSelect {
+  width: 120px;
+}
+
+.formTextarea {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 8px;
+  resize: vertical;
+}
+
+.formActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.saveButton,
+.cancelButton {
+  padding: 8px 16px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saveButton {
+  background: #2da44e;
+  color: white;
+  border-color: #2da44e;
+}
+
+.saveButton:hover {
+  background: #2c974b;
+}
+
+.cancelButton {
+  background: white;
+  color: #24292f;
+}
+
+.cancelButton:hover {
+  background: #f3f4f6;
+}
+
+.presetsList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.presetCard {
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+  transition: all 0.2s;
+}
+
+.presetCard:hover {
+  border-color: #8b949e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.presetHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.presetInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.presetName {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.category {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  width: fit-content;
+}
+
+.categoryQuality {
+  background: #ddf4ff;
+  color: #0969da;
+}
+
+.categorySpeed {
+  background: #fff8dc;
+  color: #bc6c00;
+}
+
+.categoryPrinting {
+  background: #dcf8e8;
+  color: #116329;
+}
+
+.categorySize {
+  background: #ffeaa7;
+  color: #d68910;
+}
+
+.categoryCustom {
+  background: #f3f4f6;
+  color: #656d76;
+}
+
+.starRating {
+  display: flex;
+  gap: 2px;
+}
+
+.star {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #d0d7de;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+
+.star:not(:disabled):hover {
+  color: #fbbf24;
+}
+
+.starFilled {
+  color: #fbbf24 !important;
+}
+
+.star:disabled {
+  cursor: default;
+}
+
+.presetActions {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.useButton {
+  padding: 8px 16px;
+  border: 1px solid #2da44e;
+  border-radius: 4px;
+  background: #2da44e;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.useButton:hover {
+  background: #2c974b;
+}
+
+.deleteButton {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #cf222e;
+  border-radius: 4px;
+  background: white;
+  color: #cf222e;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteButton:hover {
+  background: #cf222e;
+  color: white;
+}
+
+.presetDescription {
+  margin: 8px 0;
+  color: #656d76;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.presetMeta {
+  display: flex;
+  gap: 16px;
+  margin: 8px 0;
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.hasChanges {
+  color: #bc6c00;
+  font-weight: 500;
+}
+
+.recommendedFor {
+  margin: 8px 0;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.recommendedFor strong {
+  color: #656d76;
+  font-weight: 600;
+}
+
+.parameterComparison {
+  margin-top: 12px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 12px;
+}
+
+.parameterComparison h5 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.comparisonTable {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.comparisonRow {
+  display: grid;
+  grid-template-columns: 1fr auto auto 1fr;
+  gap: 12px;
+  align-items: center;
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.paramName {
+  font-weight: 500;
+  color: #24292f;
+}
+
+.currentValue {
+  color: #cf222e;
+  font-family: 'Courier New', monospace;
+  text-align: right;
+}
+
+.arrow {
+  color: #8b949e;
+}
+
+.presetValue {
+  color: #2da44e;
+  font-family: 'Courier New', monospace;
+}
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #8b949e;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .controls {
+    justify-content: stretch;
+  }
+  
+  .categorySelect,
+  .sortSelect {
+    flex: 1;
+  }
+  
+  .presetHeader {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .presetActions {
+    align-self: stretch;
+    justify-content: space-between;
+  }
+  
+  .formRow {
+    flex-direction: column;
+  }
+  
+  .formSelect {
+    width: 100%;
+  }
+  
+  .comparisonRow {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    text-align: left;
+  }
+  
+  .arrow {
+    display: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .parameterPresets {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+  
+  .header {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .header h3 {
+    color: #e6edf3;
+  }
+  
+  .categorySelect,
+  .sortSelect,
+  .formInput,
+  .formSelect,
+  .formTextarea {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .createForm {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .createForm h4 {
+    color: #e6edf3;
+  }
+  
+  .cancelButton {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .cancelButton:hover {
+    background: #30363d;
+  }
+  
+  .presetCard {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .presetCard:hover {
+    border-color: #8b949e;
+  }
+  
+  .presetName {
+    color: #e6edf3;
+  }
+  
+  .presetDescription {
+    color: #8b949e;
+  }
+  
+  .recommendedFor {
+    color: #e6edf3;
+  }
+  
+  .recommendedFor strong {
+    color: #8b949e;
+  }
+  
+  .parameterComparison {
+    border-color: #30363d;
+  }
+  
+  .parameterComparison h5 {
+    color: #e6edf3;
+  }
+  
+  .paramName {
+    color: #e6edf3;
+  }
+  
+  .deleteButton {
+    background: #21262d;
+    border-color: #cf222e;
+  }
+}
