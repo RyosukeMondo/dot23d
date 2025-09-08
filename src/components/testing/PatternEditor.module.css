@@ -1,0 +1,150 @@
+.patternEditor {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+  flex-wrap: wrap;
+}
+
+.toolButton {
+  padding: 6px 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  background: white;
+  color: #24292f;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.toolButton:hover {
+  background: #f3f4f6;
+  border-color: #8b949e;
+}
+
+.toolButton:active {
+  background: #e5e7eb;
+  transform: translateY(1px);
+}
+
+.separator {
+  width: 1px;
+  height: 20px;
+  background: #e0e0e0;
+  margin: 0 4px;
+}
+
+.zoomLevel {
+  font-size: 14px;
+  color: #656d76;
+  min-width: 45px;
+  text-align: center;
+}
+
+.canvasContainer {
+  flex: 1;
+  overflow: auto;
+  background: #f8f9fa;
+  position: relative;
+  min-height: 300px;
+}
+
+.canvas {
+  display: block;
+  cursor: crosshair;
+  image-rendering: pixelated;
+}
+
+.canvas:active {
+  cursor: grabbing;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+  font-size: 12px;
+  color: #656d76;
+  flex-wrap: wrap;
+}
+
+.instructions {
+  margin-left: auto;
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .toolbar {
+    padding: 8px;
+    gap: 6px;
+  }
+  
+  .toolButton {
+    padding: 4px 8px;
+    font-size: 12px;
+  }
+  
+  .info {
+    padding: 6px 8px;
+    font-size: 11px;
+  }
+  
+  .instructions {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 4px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .patternEditor {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+  
+  .toolbar,
+  .info {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .toolButton {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .toolButton:hover {
+    background: #30363d;
+    border-color: #8b949e;
+  }
+  
+  .toolButton:active {
+    background: #262c36;
+  }
+  
+  .canvasContainer {
+    background: #0d1117;
+  }
+  
+  .zoomLevel,
+  .info {
+    color: #8b949e;
+  }
+}
