@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { PatternManagementPanel } from '../components/testing/PatternManagementPanel';
-import { ParameterTestingPanel } from '../components/testing/ParameterTestingPanel';
-import { PerformanceMonitoringPanel } from '../components/testing/PerformanceMonitoringPanel';
-import { ResultsDashboardPanel } from '../components/testing/ResultsDashboardPanel';
-import { AutomatedTestingPanel } from '../components/testing/AutomatedTestingPanel';
+import React, { useState, Suspense, memo, useCallback } from 'react';
+import LoadingSpinner from '../components/common/LoadingSpinner';
 import styles from './TestingDashboardPage.module.css';
+
+// Lazy-loaded testing panels for better performance
+const PatternManagementPanel = React.lazy(() => import('../components/testing/PatternManagementPanel'));
+const ParameterTestingPanel = React.lazy(() => import('../components/testing/ParameterTestingPanel'));
+const PerformanceMonitoringPanel = React.lazy(() => import('../components/testing/PerformanceMonitoringPanel'));
+const ResultsDashboardPanel = React.lazy(() => import('../components/testing/ResultsDashboardPanel'));
+const AutomatedTestingPanel = React.lazy(() => import('../components/testing/AutomatedTestingPanel'));
 
 type TestingTab = 'patterns' | 'parameters' | 'performance' | 'results' | 'automation';
 
@@ -14,11 +17,15 @@ interface TestingDashboardPageProps {
   showBreadcrumbs?: boolean;
 }
 
-const TestingDashboardPage: React.FC<TestingDashboardPageProps> = ({ 
+const TestingDashboardPage: React.FC<TestingDashboardPageProps> = memo(({ 
   initialTab = 'patterns',
   showBreadcrumbs = true 
 }) => {
   const [activeTab, setActiveTab] = useState<TestingTab>(initialTab);
+
+  const handleTabChange = useCallback((tabId: TestingTab) => {
+    setActiveTab(tabId);
+  }, []);
 
   const tabs = [
     {
@@ -97,7 +104,7 @@ const TestingDashboardPage: React.FC<TestingDashboardPageProps> = ({
             <button
               key={tab.id}
               className={`${styles.tab} ${activeTab === tab.id ? styles.active : ''}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => handleTabChange(tab.id)}
               role="tab"
               aria-selected={activeTab === tab.id}
               aria-controls={`panel-${tab.id}`}
@@ -121,7 +128,9 @@ const TestingDashboardPage: React.FC<TestingDashboardPageProps> = ({
           role="tabpanel"
           aria-labelledby={`tab-${activeTab}`}
         >
-          {renderActivePanel()}
+          <Suspense fallback={<LoadingSpinner message="Loading testing panel..." size="medium" />}>
+            {renderActivePanel()}
+          </Suspense>
         </div>
       </div>
 

@@ -1,16 +1,17 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
 import { AppProvider } from './context/AppContext'
 import { ErrorBoundary } from './components/common/ErrorBoundary'
 import Breadcrumbs from './components/common/Breadcrumbs'
+import LoadingSpinner from './components/common/LoadingSpinner'
 
-// Page imports
-import IntegratedApp from './pages/IntegratedApp'
-import ImageLoadPage from './pages/ImageLoadPage'
-import ImageConversionPage from './pages/ImageConversionPage'
-import DotEditPage from './pages/DotEditPage'
-import Model3DPage from './pages/Model3DPage'
-import TestingDashboardPage from './pages/TestingDashboardPage'
+// Lazy-loaded page imports for better performance
+const IntegratedApp = React.lazy(() => import('./pages/IntegratedApp'))
+const ImageLoadPage = React.lazy(() => import('./pages/ImageLoadPage'))
+const ImageConversionPage = React.lazy(() => import('./pages/ImageConversionPage'))
+const DotEditPage = React.lazy(() => import('./pages/DotEditPage'))
+const Model3DPage = React.lazy(() => import('./pages/Model3DPage'))
+const TestingDashboardPage = React.lazy(() => import('./pages/TestingDashboardPage'))
 
 
 // Development navigation component
@@ -140,7 +141,8 @@ function App() {
             <DevNavigation />
             <main className="main-content">
               <ErrorBoundary>
-                <Routes>
+                <Suspense fallback={<LoadingSpinner message="Loading page..." size="large" />}>
+                  <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/app" element={<IntegratedApp />} />
                   <Route 
@@ -209,7 +211,8 @@ function App() {
                       </div>
                     } 
                   />
-                </Routes>
+                  </Routes>
+                </Suspense>
               </ErrorBoundary>
             </main>
           </div>
