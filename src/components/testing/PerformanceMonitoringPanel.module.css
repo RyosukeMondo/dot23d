@@ -1,0 +1,798 @@
+.performanceMonitoringPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--background-color);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Header Section */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.titleSection {
+  flex: 1;
+}
+
+.title {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  max-width: 500px;
+}
+
+.headerControls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Health Indicator */
+.healthIndicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid;
+}
+
+.healthIndicator.low {
+  background: var(--success-background);
+  border-color: var(--success-color);
+  color: var(--success-color);
+}
+
+.healthIndicator.medium {
+  background: var(--warning-background);
+  border-color: var(--warning-color);
+  color: var(--warning-color);
+}
+
+.healthIndicator.high {
+  background: var(--error-background);
+  border-color: var(--error-color);
+  color: var(--error-color);
+}
+
+.healthIcon {
+  font-size: 1rem;
+}
+
+.healthStatus {
+  display: flex;
+  flex-direction: column;
+}
+
+.healthLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.healthDetails {
+  font-size: 0.75rem;
+  opacity: 0.8;
+  text-transform: capitalize;
+}
+
+/* Monitoring Controls */
+.monitoringControls {
+  display: flex;
+  gap: 8px;
+}
+
+.monitoringButton {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.monitoringButton.start {
+  background: var(--success-color);
+  color: white;
+}
+
+.monitoringButton.start:hover:not(:disabled) {
+  background: var(--success-hover);
+}
+
+.monitoringButton.stop {
+  background: var(--error-color);
+  color: white;
+}
+
+.monitoringButton.stop:hover:not(:disabled) {
+  background: var(--error-hover);
+}
+
+.monitoringButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.configButton {
+  padding: 8px;
+  background: var(--background-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.configButton:hover {
+  background: var(--hover-color);
+  color: var(--text-primary);
+}
+
+/* Alerts Bar */
+.alertsBar {
+  background: var(--warning-background);
+  border-bottom: 1px solid var(--warning-color);
+  padding: 12px 24px;
+}
+
+.alertsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.alertsTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--warning-color);
+}
+
+.clearAlertsButton {
+  padding: 4px 8px;
+  background: none;
+  border: 1px solid var(--warning-color);
+  border-radius: 4px;
+  font-size: 0.75rem;
+  color: var(--warning-color);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clearAlertsButton:hover {
+  background: var(--warning-color);
+  color: white;
+}
+
+.alertsList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alert {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.alert.info {
+  background: var(--info-background);
+  color: var(--info-color);
+}
+
+.alert.warning {
+  background: var(--warning-background);
+  color: var(--warning-color);
+}
+
+.alert.critical {
+  background: var(--error-background);
+  color: var(--error-color);
+}
+
+.alertContent {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.alertMessage {
+  font-weight: 500;
+}
+
+.alertTime {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.dismissAlertButton {
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 0 4px;
+  margin-left: 8px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.dismissAlertButton:hover {
+  opacity: 1;
+}
+
+/* Stats Bar */
+.statsBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 16px 24px;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.statValue {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 2px;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Tab Navigation */
+.tabNavigation {
+  display: flex;
+  background: var(--surface-color);
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+
+.tabButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tabButton:hover {
+  background: var(--hover-color);
+}
+
+.tabButton.active {
+  border-bottom-color: var(--primary-color);
+  background: var(--background-color);
+}
+
+.tabIcon {
+  font-size: 1rem;
+}
+
+.tabLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.tabButton.active .tabLabel {
+  color: var(--primary-color);
+}
+
+.tabBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  background: var(--accent-color);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 9px;
+  padding: 0 5px;
+}
+
+/* Tab Content */
+.tabContent {
+  flex: 1;
+  overflow: hidden;
+}
+
+.realtimeView,
+.chartsView,
+.recommendationsView,
+.comparisonView {
+  height: 100%;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+/* Charts View */
+.chartsControls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.exportControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.exportButton {
+  padding: 6px 12px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.exportButton:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.exportButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Recommendations View */
+.recommendationsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.recommendationsHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.refreshRecommendationsButton {
+  padding: 8px 12px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.refreshRecommendationsButton:hover:not(:disabled) {
+  background: var(--primary-hover);
+}
+
+.refreshRecommendationsButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.suggestionsList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.suggestionCard {
+  padding: 20px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  border-left: 4px solid;
+}
+
+.suggestionCard.memory {
+  border-left-color: var(--info-color);
+}
+
+.suggestionCard.cpu {
+  border-left-color: var(--warning-color);
+}
+
+.suggestionCard.time {
+  border-left-color: var(--accent-color);
+}
+
+.suggestionCard.quality {
+  border-left-color: var(--success-color);
+}
+
+.suggestionCard.high {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suggestionHeader {
+  margin-bottom: 12px;
+}
+
+.suggestionTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.categoryIcon {
+  font-size: 1.2rem;
+}
+
+.categoryName {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.priorityBadge {
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.priorityBadge.low {
+  background: var(--info-background);
+  color: var(--info-color);
+}
+
+.priorityBadge.medium {
+  background: var(--warning-background);
+  color: var(--warning-color);
+}
+
+.priorityBadge.high {
+  background: var(--error-background);
+  color: var(--error-color);
+}
+
+.suggestionContent {
+  margin-bottom: 16px;
+}
+
+.suggestionText {
+  margin: 0 0 8px 0;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.expectedImprovement {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.suggestionActions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.applySuggestionButton {
+  padding: 8px 16px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.applySuggestionButton:hover {
+  background: var(--primary-hover);
+}
+
+/* Empty States */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.emptyIcon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.emptyState h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+}
+
+.emptyState p {
+  margin: 0;
+  font-size: 0.875rem;
+  max-width: 300px;
+}
+
+/* Comparison View */
+.comparisonControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.comparisonControls h3 {
+  margin: 0;
+  font-size: 1.125rem;
+  color: var(--text-primary);
+}
+
+.sessionSelect {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--background-color);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  min-width: 200px;
+}
+
+/* Configuration Modal */
+.configModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.configPanel {
+  background: var(--surface-color);
+  border-radius: 8px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.configHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.configHeader h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.closeConfigButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s ease;
+}
+
+.closeConfigButton:hover {
+  color: var(--text-primary);
+}
+
+.configContent {
+  padding: 20px;
+}
+
+.configSection {
+  margin-bottom: 24px;
+}
+
+.configSection h4 {
+  margin: 0 0 12px 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.configSection label {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.configInput {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  background: var(--background-color);
+}
+
+.checkboxLabel {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.checkboxLabel input[type="checkbox"] {
+  width: auto !important;
+}
+
+.thresholdInputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.configActions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.saveConfigButton {
+  padding: 10px 20px;
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.saveConfigButton:hover {
+  background: var(--primary-hover);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .headerControls {
+    flex-direction: column;
+    gap: 12px;
+    align-self: stretch;
+  }
+
+  .healthIndicator {
+    align-self: flex-start;
+  }
+
+  .statsBar {
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
+
+  .tabNavigation {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .alertsBar {
+    padding: 12px 16px;
+  }
+
+  .alertsHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .realtimeView,
+  .chartsView,
+  .recommendationsView,
+  .comparisonView {
+    padding: 16px;
+  }
+
+  .thresholdInputs {
+    grid-template-columns: 1fr;
+  }
+
+  .configModal {
+    padding: 16px;
+  }
+
+  .configPanel {
+    width: 100%;
+    max-height: 90vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.8rem;
+  }
+
+  .tabButton {
+    padding: 12px 16px;
+  }
+
+  .tabLabel {
+    display: none;
+  }
+
+  .statsBar {
+    padding: 12px;
+  }
+
+  .stat {
+    min-width: 80px;
+  }
+
+  .statValue {
+    font-size: 1rem;
+  }
+
+  .statLabel {
+    font-size: 0.7rem;
+  }
+}
