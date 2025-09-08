@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react'
+import * as THREE from 'three'
 import { useAppContext } from '@/context/AppContext'
 import { TestSessionService } from '@/services/TestSessionService'
 import { PerformanceService } from '@/services/PerformanceService'
@@ -6,7 +7,7 @@ import PatternEditor from '@/components/testing/PatternEditor'
 import PatternLibrary from '@/components/testing/PatternLibrary'
 import ParameterPresets from '@/components/testing/ParameterPresets'
 import ModelViewer from '@/components/ModelViewer'
-import type { DotPattern, Model3DParams, TestSession } from '@/types'
+import type { DotPattern, Model3DParams, TestSession, TestResult, MeshStats as FullMeshStats } from '@/types'
 import styles from './Model3DPage.module.css'
 
 type PanelType = 'patterns' | 'parameters' | 'viewer' | 'performance' | 'results' | 'automation'
@@ -58,8 +59,8 @@ export const Model3DPage: React.FC = () => {
       icon: '🎲',
       component: Enhanced3DViewerPanel,
       defaultProps: {
-        model: generatedModel,
-        pattern: currentPattern
+        pattern: currentPattern,
+        model3DParams: currentParams
       }
     },
     {
@@ -112,13 +113,24 @@ export const Model3DPage: React.FC = () => {
   // Handle pattern changes
   useEffect(() => {
     if (currentPattern && state.testSession) {
-      const updatedSession = {
-        ...state.testSession,
-        patterns: [currentPattern, ...state.testSession.patterns.filter(p => 
-          !(p.width === currentPattern.width && p.height === currentPattern.height)
-        )].slice(0, 10) // Keep last 10 patterns
-      }
-      setTestSession(updatedSession)
+      const session = state.testSession
+
+      // If the first pattern is already the currentPattern reference, no update needed
+      const firstIsCurrent = session.patterns.length > 0 && session.patterns[0] === currentPattern
+      if (firstIsCurrent) return
+
+      const updatedPatterns = [
+        currentPattern,
+        ...session.patterns.filter(p => !(p.width === currentPattern.width && p.height === currentPattern.height))
+      ].slice(0, 10)
+
+      // If arrays are reference-equal element-wise, avoid dispatch
+      const sameOrderAndRefs =
+        session.patterns.length === updatedPatterns.length &&
+        session.patterns.every((p, i) => p === updatedPatterns[i])
+      if (sameOrderAndRefs) return
+
+      setTestSession({ ...session, patterns: updatedPatterns })
     }
   }, [currentPattern, state.testSession, setTestSession])
 
@@ -135,16 +147,29 @@ export const Model3DPage: React.FC = () => {
 
     try {
       // Simulate model generation with the existing service
-      const { generateMesh, getMeshStats } = await import('@/services/Model3DService')
+      const { Model3DService } = await import('@/services/Model3DService')
       
       const startTime = performance.now()
-      const mesh = generateMesh(currentPattern, currentParams)
+      const mesh = Model3DService.generateMesh(currentPattern, currentParams)
       const processingTime = performance.now() - startTime
 
-      const meshStats = getMeshStats(mesh)
+      const basicStats = Model3DService.getMeshStats(mesh)
+      // Compute bounding box for full stats
+      const box = new THREE.Box3().setFromObject(mesh)
+      const size = box.getSize(new THREE.Vector3())
+      // Map to the full MeshStats interface expected by TestResult
+      const meshStats: FullMeshStats = {
+        vertexCount: basicStats.vertexCount,
+        faceCount: basicStats.faceCount,
+        edgeCount: 0, // Not computed in current generator; placeholder
+        boundingBox: { width: size.x, height: size.y, depth: size.z },
+        surfaceArea: 0, // Not computed; could be added in MeshGenerator later
+        volume: 0, // Not computed; could be added in MeshGenerator later
+        memoryUsage: Math.round(basicStats.fileSizeEstimate / 1024) // Approx KB
+      }
       
       // Create test result
-      const testResult = {
+      const testResult: TestResult = {
         id: testId,
         testSessionId: state.testSession.id,
         timestamp: new Date(),
@@ -402,14 +427,30 @@ const ParameterTestingPanel: React.FC<{ currentParams: Model3DParams; onParamsCh
   </div>
 )
 
-const Enhanced3DViewerPanel: React.FC<{ model: any; pattern: DotPattern | null }> = ({ model, pattern }) => (
+const Enhanced3DViewerPanel: React.FC<{ pattern: DotPattern | null; model3DParams: Model3DParams }> = ({ pattern, model3DParams }) => (
   <div className={styles.placeholderPanel}>
-    {model ? (
-      <ModelViewer model={model} />
+    {pattern ? (
+      <ModelViewer 
+        pattern={pattern}
+        model3DParams={model3DParams}
+        onExport={(blob, filename) => {
+          // Basic download helper
+          const url = URL.createObjectURL(blob)
+          const a = document.createElement('a')
+          a.href = url
+          a.download = `${filename}.obj`
+          a.click()
+          URL.revokeObjectURL(url)
+        }}
+        onError={(msg) => {
+          // Simple error surface for now
+          console.error('ModelViewer error:', msg)
+        }}
+      />
     ) : (
       <div className={styles.noModel}>
-        <p>No 3D model generated yet.</p>
-        {pattern && <p>Select a pattern and click "Generate 3D Model" to begin.</p>}
+        <p>No pattern selected.</p>
+        <p>Select a pattern and click "Generate 3D Model" to begin.</p>
       </div>
     )}
   </div>

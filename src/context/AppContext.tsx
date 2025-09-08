@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer, type ReactNode } from 'react'
+import React, { createContext, useContext, useReducer, useCallback, useMemo, type ReactNode } from 'react'
 import type { 
   DotPattern, 
   ConversionParams, 
@@ -382,112 +382,112 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState)
 
   // Convenience methods
-  const setCurrentStep = (step: AppState['currentStep']) => {
+  const setCurrentStep = useCallback((step: AppState['currentStep']) => {
     dispatch({ type: 'SET_CURRENT_STEP', payload: step })
-  }
+  }, [dispatch])
 
-  const setUploadedFile = (file: File | null) => {
+  const setUploadedFile = useCallback((file: File | null) => {
     dispatch({ type: 'SET_UPLOADED_FILE', payload: file })
-  }
+  }, [dispatch])
 
-  const setOriginalImage = (image: ImageData | null) => {
+  const setOriginalImage = useCallback((image: ImageData | null) => {
     dispatch({ type: 'SET_ORIGINAL_IMAGE', payload: image })
-  }
+  }, [dispatch])
 
-  const setDotPattern = (pattern: DotPattern | null) => {
+  const setDotPattern = useCallback((pattern: DotPattern | null) => {
     dispatch({ type: 'SET_DOT_PATTERN', payload: pattern })
-  }
+  }, [dispatch])
 
-  const updateConversionParams = (params: Partial<ConversionParams>) => {
+  const updateConversionParams = useCallback((params: Partial<ConversionParams>) => {
     dispatch({ type: 'UPDATE_CONVERSION_PARAMS', payload: params })
-  }
+  }, [dispatch])
 
-  const updateModel3DParams = (params: Partial<Model3DParams>) => {
+  const updateModel3DParams = useCallback((params: Partial<Model3DParams>) => {
     dispatch({ type: 'UPDATE_MODEL3D_PARAMS', payload: params })
-  }
+  }, [dispatch])
 
-  const setLoading = (loading: boolean) => {
+  const setLoading = useCallback((loading: boolean) => {
     dispatch({ type: 'SET_LOADING', payload: loading })
-  }
+  }, [dispatch])
 
-  const setError = (error: string | null) => {
+  const setError = useCallback((error: string | null) => {
     dispatch({ type: 'SET_ERROR', payload: error })
-  }
+  }, [dispatch])
 
-  const addSessionEntry = (entry: Omit<SessionEntry, 'id' | 'timestamp'>) => {
+  const addSessionEntry = useCallback((entry: Omit<SessionEntry, 'id' | 'timestamp'>) => {
     dispatch({ type: 'ADD_SESSION_ENTRY', payload: entry })
-  }
+  }, [dispatch])
 
-  const clearSessionHistory = () => {
+  const clearSessionHistory = useCallback(() => {
     dispatch({ type: 'CLEAR_SESSION_HISTORY' })
-  }
+  }, [dispatch])
 
-  const resetState = () => {
+  const resetState = useCallback(() => {
     dispatch({ type: 'RESET_STATE' })
-  }
+  }, [dispatch])
 
-  const toggleDevelopmentMode = () => {
+  const toggleDevelopmentMode = useCallback(() => {
     dispatch({ type: 'TOGGLE_DEVELOPMENT_MODE' })
-  }
+  }, [dispatch])
 
   // Enhanced testing methods
-  const setTestSession = (session: TestSession | null) => {
+  const setTestSession = useCallback((session: TestSession | null) => {
     dispatch({ type: 'SET_TEST_SESSION', payload: session })
-  }
+  }, [dispatch])
 
-  const addTestResult = (result: TestResult) => {
+  const addTestResult = useCallback((result: TestResult) => {
     dispatch({ type: 'ADD_TEST_RESULT', payload: result })
-  }
+  }, [dispatch])
 
-  const updateTestResult = (id: string, result: Partial<TestResult>) => {
+  const updateTestResult = useCallback((id: string, result: Partial<TestResult>) => {
     dispatch({ type: 'UPDATE_TEST_RESULT', payload: { id, result } })
-  }
+  }, [dispatch])
 
-  const clearTestResults = () => {
+  const clearTestResults = useCallback(() => {
     dispatch({ type: 'CLEAR_TEST_RESULTS' })
-  }
+  }, [dispatch])
 
-  const addPerformanceMetric = (metric: PerformanceMetrics) => {
+  const addPerformanceMetric = useCallback((metric: PerformanceMetrics) => {
     dispatch({ type: 'ADD_PERFORMANCE_METRIC', payload: metric })
-  }
+  }, [dispatch])
 
-  const clearPerformanceMetrics = () => {
+  const clearPerformanceMetrics = useCallback(() => {
     dispatch({ type: 'CLEAR_PERFORMANCE_METRICS' })
-  }
+  }, [dispatch])
 
-  const setParameterPresets = (presets: ParameterPreset[]) => {
+  const setParameterPresets = useCallback((presets: ParameterPreset[]) => {
     dispatch({ type: 'SET_PARAMETER_PRESETS', payload: presets })
-  }
+  }, [dispatch])
 
-  const addParameterPreset = (preset: ParameterPreset) => {
+  const addParameterPreset = useCallback((preset: ParameterPreset) => {
     dispatch({ type: 'ADD_PARAMETER_PRESET', payload: preset })
-  }
+  }, [dispatch])
 
-  const removeParameterPreset = (id: string) => {
+  const removeParameterPreset = useCallback((id: string) => {
     dispatch({ type: 'REMOVE_PARAMETER_PRESET', payload: id })
-  }
+  }, [dispatch])
 
-  const setActiveTestId = (id: string | null) => {
+  const setActiveTestId = useCallback((id: string | null) => {
     dispatch({ type: 'SET_ACTIVE_TEST_ID', payload: id })
-  }
+  }, [dispatch])
 
-  const addTestHistory = (session: TestSession) => {
+  const addTestHistory = useCallback((session: TestSession) => {
     dispatch({ type: 'ADD_TEST_HISTORY', payload: session })
-  }
+  }, [dispatch])
 
-  const clearTestHistory = () => {
+  const clearTestHistory = useCallback(() => {
     dispatch({ type: 'CLEAR_TEST_HISTORY' })
-  }
+  }, [dispatch])
 
-  const toggleTestMode = () => {
+  const toggleTestMode = useCallback(() => {
     dispatch({ type: 'TOGGLE_TEST_MODE' })
-  }
+  }, [dispatch])
 
-  const updateTestSession = (updates: Partial<TestSession>) => {
+  const updateTestSession = useCallback((updates: Partial<TestSession>) => {
     dispatch({ type: 'UPDATE_TEST_SESSION', payload: updates })
-  }
+  }, [dispatch])
 
-  const contextValue: AppContextType = {
+  const contextValue: AppContextType = useMemo(() => ({
     state,
     dispatch,
     setCurrentStep,
@@ -517,7 +517,36 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     clearTestHistory,
     toggleTestMode,
     updateTestSession
-  }
+  }), [
+    state,
+    dispatch,
+    setCurrentStep,
+    setUploadedFile,
+    setOriginalImage,
+    setDotPattern,
+    updateConversionParams,
+    updateModel3DParams,
+    setLoading,
+    setError,
+    addSessionEntry,
+    clearSessionHistory,
+    resetState,
+    toggleDevelopmentMode,
+    setTestSession,
+    addTestResult,
+    updateTestResult,
+    clearTestResults,
+    addPerformanceMetric,
+    clearPerformanceMetrics,
+    setParameterPresets,
+    addParameterPreset,
+    removeParameterPreset,
+    setActiveTestId,
+    addTestHistory,
+    clearTestHistory,
+    toggleTestMode,
+    updateTestSession
+  ])
 
   return (
     <AppContext.Provider value={contextValue}>
