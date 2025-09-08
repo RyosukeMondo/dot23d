@@ -29,3 +29,30 @@ export type {
   AppAction,
   AppContextType
 } from './AppState'
+
+// Enhanced testing interfaces
+export type {
+  TestSession,
+  TestResult,
+  PerformanceMetrics,
+  PerformanceSnapshot,
+  ParameterPreset,
+  QualityReport,
+  MeshStats,
+  ExportResult,
+  PatternFilter,
+  OverhangAnalysis,
+  ThicknessAnalysis,
+  BridgingAnalysis,
+  QualityRecommendation,
+  QualityWarning,
+  SweepConfig,
+  SweepResult,
+  BulkTestConfig,
+  TestSuite,
+  TestSuiteTest,
+  TestSuiteResult,
+  Measurement,
+  ComparisonResult,
+  CIReport
+} from './TestingInterfaces'
