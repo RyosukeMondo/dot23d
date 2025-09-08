@@ -1,0 +1,537 @@
+.model3DPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #f8f9fa;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  z-index: 10;
+}
+
+.toolbarLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.toolbar h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.sessionInfo {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  color: #656d76;
+}
+
+.toolbarCenter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.layoutControls {
+  display: flex;
+  gap: 4px;
+  background: #f8f9fa;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.layoutButton {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  color: #656d76;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.layoutButton:hover {
+  background: white;
+  color: #24292f;
+}
+
+.layoutButton.active {
+  background: white;
+  color: #0969da;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.toolbarRight {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.panelTabs {
+  display: flex;
+  gap: 2px;
+  background: #f8f9fa;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 2px;
+}
+
+.panelTab {
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.panelTab:hover {
+  background: white;
+  transform: translateY(-1px);
+}
+
+.panelTab.active {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.panelContainer {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Single Panel Layout */
+.singlePanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Split Panel Layout */
+.splitPanels {
+  flex: 1;
+  display: flex;
+  gap: 8px;
+  margin: 16px;
+}
+
+.splitPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.splitPanelSelector {
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.panelSelect {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  background: white;
+  font-size: 14px;
+}
+
+.splitPanelContent {
+  flex: 1;
+}
+
+.splitDivider {
+  width: 2px;
+  background: #d0d7de;
+  cursor: col-resize;
+  transition: background 0.2s;
+}
+
+.splitDivider:hover {
+  background: #8b949e;
+}
+
+/* Quad Panel Layout */
+.quadPanels {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 8px;
+  margin: 16px;
+}
+
+.quadPanel {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.quadPanelContent {
+  height: 100%;
+}
+
+/* Panel Content */
+.panelContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.panelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.panelHeader h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.generateButton {
+  padding: 8px 16px;
+  border: 1px solid #2da44e;
+  border-radius: 4px;
+  background: #2da44e;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.generateButton:hover:not(:disabled) {
+  background: #2c974b;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(45, 164, 78, 0.2);
+}
+
+.generateButton:disabled {
+  background: #8b949e;
+  border-color: #8b949e;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.panelBody {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Placeholder Panels */
+.placeholderPanel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px;
+  gap: 16px;
+}
+
+.placeholderPanel h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.placeholderPanel p {
+  margin: 0;
+  color: #656d76;
+  line-height: 1.5;
+}
+
+.noModel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: #8b949e;
+  font-style: italic;
+  text-align: center;
+}
+
+/* Generation Overlay */
+.generatingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.generatingDialog {
+  background: white;
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  margin: 20px;
+}
+
+.generatingDialog h3 {
+  margin: 16px 0 8px 0;
+  font-size: 20px;
+  color: #24292f;
+}
+
+.generatingDialog p {
+  margin: 4px 0;
+  color: #656d76;
+  font-size: 14px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e0e0e0;
+  border-top-color: #2da44e;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+  }
+  
+  .toolbarLeft h1 {
+    font-size: 18px;
+  }
+  
+  .sessionInfo {
+    font-size: 11px;
+  }
+  
+  .panelTabs {
+    order: -1;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .layoutControls {
+    display: none;
+  }
+  
+  .quadPanels {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .model3DPage {
+    height: 100vh;
+  }
+  
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .splitPanels {
+    flex-direction: column;
+    margin: 8px;
+  }
+  
+  .splitDivider {
+    height: 2px;
+    width: auto;
+    cursor: row-resize;
+  }
+  
+  .singlePanel,
+  .quadPanels {
+    margin: 8px;
+  }
+  
+  .panelHeader {
+    padding: 12px;
+  }
+  
+  .panelHeader h3 {
+    font-size: 14px;
+  }
+  
+  .generateButton {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+  
+  .generatingDialog {
+    padding: 24px;
+    margin: 16px;
+  }
+  
+  .generatingDialog h3 {
+    font-size: 18px;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  .model3DPage {
+    background: #0d1117;
+  }
+  
+  .toolbar {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .toolbar h1 {
+    color: #e6edf3;
+  }
+  
+  .sessionInfo {
+    color: #8b949e;
+  }
+  
+  .layoutControls,
+  .panelTabs {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  
+  .layoutButton,
+  .panelTab {
+    color: #8b949e;
+  }
+  
+  .layoutButton:hover,
+  .panelTab:hover {
+    background: #30363d;
+    color: #e6edf3;
+  }
+  
+  .layoutButton.active,
+  .panelTab.active {
+    background: #30363d;
+    color: #58a6ff;
+  }
+  
+  .panelContent,
+  .splitPanel,
+  .quadPanel {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .panelHeader {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  
+  .panelHeader h3 {
+    color: #e6edf3;
+  }
+  
+  .panelSelect {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .splitPanelSelector {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  
+  .splitDivider {
+    background: #30363d;
+  }
+  
+  .splitDivider:hover {
+    background: #8b949e;
+  }
+  
+  .placeholderPanel h4 {
+    color: #e6edf3;
+  }
+  
+  .placeholderPanel p {
+    color: #8b949e;
+  }
+  
+  .noModel {
+    color: #8b949e;
+  }
+  
+  .generatingDialog {
+    background: #161b22;
+    border: 1px solid #30363d;
+  }
+  
+  .generatingDialog h3 {
+    color: #e6edf3;
+  }
+  
+  .generatingDialog p {
+    color: #8b949e;
+  }
+  
+  .spinner {
+    border-color: #30363d;
+    border-top-color: #2da44e;
+  }
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom'
 import { AppProvider } from './context/AppContext'
 import { ErrorBoundary } from './components/common/ErrorBoundary'
+import Breadcrumbs from './components/common/Breadcrumbs'
 
 // Page imports
 import IntegratedApp from './pages/IntegratedApp'
@@ -9,6 +10,7 @@ import ImageLoadPage from './pages/ImageLoadPage'
 import ImageConversionPage from './pages/ImageConversionPage'
 import DotEditPage from './pages/DotEditPage'
 import Model3DPage from './pages/Model3DPage'
+import TestingDashboardPage from './pages/TestingDashboardPage'
 
 
 // Development navigation component
@@ -21,7 +23,8 @@ const DevNavigation: React.FC = () => {
     { path: '/dev/image-load', label: 'Image Load', description: 'File upload testing' },
     { path: '/dev/image-conversion', label: 'Image Conversion', description: 'Image to dot art' },
     { path: '/dev/dot-edit', label: 'Dot Editor', description: 'Pattern editing testing' },
-    { path: '/dev/model-3d', label: '3D Model', description: '3D generation testing' }
+    { path: '/dev/model-3d', label: '3D Model', description: '3D generation testing' },
+    { path: '/dev/testing', label: 'Enhanced Testing', description: 'Comprehensive testing interface' }
   ]
 
   return (
@@ -90,6 +93,13 @@ const Home: React.FC = () => {
         </div>
 
         <div className="feature-card">
+          <div className="feature-icon">🧪</div>
+          <h3 className="feature-title">Enhanced Testing</h3>
+          <p className="feature-description">Comprehensive testing dashboard with pattern management, parameter testing, and performance monitoring</p>
+          <Link to="/dev/testing" className="feature-link">Open Testing Interface →</Link>
+        </div>
+
+        <div className="feature-card">
           <div className="feature-icon">🚀</div>
           <h3 className="feature-title">Complete App</h3>
           <p className="feature-description">Use the fully integrated application for the complete workflow</p>
@@ -137,6 +147,7 @@ function App() {
                     path="/dev/image-load" 
                     element={
                       <div className="dev-page">
+                        <Breadcrumbs />
                         <div className="dev-page-header">
                           <h2>Image Loading & Parsing Test</h2>
                           <p>Test file upload, CSV parsing, and image preview functionality</p>
@@ -149,6 +160,7 @@ function App() {
                     path="/dev/image-conversion" 
                     element={
                       <div className="dev-page">
+                        <Breadcrumbs />
                         <div className="dev-page-header">
                           <h2>Image to Dot Art Conversion Test</h2>
                           <p>Test image processing, threshold adjustment, and dot art generation</p>
@@ -161,6 +173,7 @@ function App() {
                     path="/dev/dot-edit" 
                     element={
                       <div className="dev-page">
+                        <Breadcrumbs />
                         <div className="dev-page-header">
                           <h2>Dot Pattern Editor Test</h2>
                           <p>Test interactive dot pattern editing, click-to-toggle, and range selection</p>
@@ -173,6 +186,7 @@ function App() {
                     path="/dev/model-3d" 
                     element={
                       <div className="dev-page">
+                        <Breadcrumbs />
                         <div className="dev-page-header">
                           <h2>3D Model Generation Test</h2>
                           <p>Test 3D mesh generation, optimization, and export functionality</p>
@@ -180,6 +194,10 @@ function App() {
                         <Model3DPage />
                       </div>
                     } 
+                  />
+                  <Route 
+                    path="/dev/testing" 
+                    element={<TestingDashboardPage showBreadcrumbs={true} />}
                   />
                   <Route 
                     path="*" 
