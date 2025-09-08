@@ -1,0 +1,416 @@
+.patternLibrary {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #24292f;
+}
+
+.controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.searchInput,
+.categorySelect,
+.sortSelect {
+  padding: 6px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.searchInput {
+  width: 200px;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.addButton,
+.importButton {
+  padding: 8px 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  background: white;
+  color: #24292f;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.addButton:hover,
+.importButton:hover {
+  background: #f3f4f6;
+  border-color: #8b949e;
+}
+
+.addPatternForm {
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.addPatternForm h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.formRow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.formInput,
+.formSelect,
+.formTextarea {
+  padding: 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.formInput {
+  flex: 1;
+}
+
+.formSelect {
+  width: 120px;
+}
+
+.formTextarea {
+  width: 100%;
+  height: 60px;
+  margin-bottom: 8px;
+  resize: vertical;
+}
+
+.formActions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.createButton,
+.cancelButton {
+  padding: 8px 16px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.createButton {
+  background: #2da44e;
+  color: white;
+  border-color: #2da44e;
+}
+
+.createButton:hover {
+  background: #2c974b;
+}
+
+.cancelButton {
+  background: white;
+  color: #24292f;
+}
+
+.cancelButton:hover {
+  background: #f3f4f6;
+}
+
+.patternGrid {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  align-content: start;
+}
+
+.patternCard {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.patternCard:hover {
+  border-color: #8b949e;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.thumbnail {
+  width: 100%;
+  height: 120px;
+  object-fit: contain;
+  background: #f8f9fa;
+  cursor: pointer;
+  image-rendering: pixelated;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.patternInfo {
+  padding: 12px;
+  flex: 1;
+}
+
+.patternName {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.patternDescription {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #656d76;
+  line-height: 1.4;
+}
+
+.patternMeta {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: #8b949e;
+}
+
+.category {
+  background: #ddf4ff;
+  color: #0969da;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-weight: 500;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 8px;
+}
+
+.tag {
+  background: #f3f4f6;
+  color: #656d76;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 11px;
+}
+
+.patternActions {
+  display: flex;
+  gap: 4px;
+  padding: 8px 12px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+}
+
+.selectButton,
+.exportButton,
+.deleteButton {
+  padding: 6px 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  background: white;
+  color: #24292f;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.selectButton {
+  flex: 1;
+  background: #2da44e;
+  color: white;
+  border-color: #2da44e;
+}
+
+.selectButton:hover {
+  background: #2c974b;
+}
+
+.exportButton:hover {
+  background: #f3f4f6;
+}
+
+.deleteButton {
+  width: 28px;
+  padding: 4px;
+  color: #cf222e;
+  border-color: #cf222e;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.deleteButton:hover {
+  background: #cf222e;
+  color: white;
+}
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b949e;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .controls {
+    flex-wrap: wrap;
+  }
+  
+  .searchInput {
+    width: 100%;
+  }
+  
+  .patternGrid {
+    grid-template-columns: 1fr;
+    padding: 12px;
+    gap: 12px;
+  }
+  
+  .formRow {
+    flex-direction: column;
+  }
+  
+  .formSelect {
+    width: 100%;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .patternLibrary {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+  
+  .header {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .header h3 {
+    color: #e6edf3;
+  }
+  
+  .searchInput,
+  .categorySelect,
+  .sortSelect,
+  .formInput,
+  .formSelect,
+  .formTextarea {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .addButton,
+  .importButton,
+  .cancelButton {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .addButton:hover,
+  .importButton:hover,
+  .cancelButton:hover {
+    background: #30363d;
+  }
+  
+  .addPatternForm {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .addPatternForm h4 {
+    color: #e6edf3;
+  }
+  
+  .patternCard {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .patternCard:hover {
+    border-color: #8b949e;
+  }
+  
+  .thumbnail {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  
+  .patternName {
+    color: #e6edf3;
+  }
+  
+  .patternDescription {
+    color: #8b949e;
+  }
+  
+  .tag {
+    background: #30363d;
+    color: #8b949e;
+  }
+  
+  .patternActions {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .exportButton {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .exportButton:hover {
+    background: #30363d;
+  }
+}
