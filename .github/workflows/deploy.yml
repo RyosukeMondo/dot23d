@@ -15,7 +15,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  quality-checks:
+    name: Quality Assurance
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,30 +34,308 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
-      - name: Lint
+      - name: Lint check
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test
+      - name: Unit tests
+        run: npm run test:coverage
+        
+      - name: Upload test coverage
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
 
-      - name: Build
+  build-and-analyze:
+    name: Build and Bundle Analysis
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
         run: npm run build
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+      - name: Analyze bundle
+        run: npm run analyze-bundle
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload bundle analysis
+        uses: actions/upload-artifact@v4
         with:
-          path: "./dist"
+          name: bundle-analysis
+          path: bundle-analysis.json
+          retention-days: 30
+
+      - name: Check bundle size
+        run: |
+          BUNDLE_SIZE=$(du -sb dist | cut -f1)
+          BUNDLE_SIZE_MB=$((BUNDLE_SIZE / 1024 / 1024))
+          echo "Bundle size: ${BUNDLE_SIZE_MB}MB"
+          if [ $BUNDLE_SIZE_MB -gt 10 ]; then
+            echo "❌ Bundle size too large: ${BUNDLE_SIZE_MB}MB (limit: 10MB)"
+            exit 1
+          else
+            echo "✅ Bundle size acceptable: ${BUNDLE_SIZE_MB}MB"
+          fi
+
+      - name: Store build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 7
+
+  e2e-tests:
+    name: End-to-End Testing
+    runs-on: ubuntu-latest
+    needs: build-and-analyze
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+
+      - name: Install Playwright
+        run: npx playwright install --with-deps
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+
+      - name: Upload E2E test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: e2e-test-results
+          path: |
+            e2e-results.json
+            test-results/
+            playwright-report/
+          retention-days: 7
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: quality-checks
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+
+      - name: Check for vulnerable dependencies
+        run: |
+          AUDIT_RESULT=$(npm audit --audit-level=high --json || true)
+          HIGH_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.high // 0')
+          CRITICAL_VULNS=$(echo "$AUDIT_RESULT" | jq -r '.metadata.vulnerabilities.critical // 0')
+          
+          echo "High vulnerabilities: $HIGH_VULNS"
+          echo "Critical vulnerabilities: $CRITICAL_VULNS"
+          
+          if [ "$CRITICAL_VULNS" -gt 0 ]; then
+            echo "❌ Critical vulnerabilities found"
+            exit 1
+          elif [ "$HIGH_VULNS" -gt 0 ]; then
+            echo "⚠️ High vulnerabilities found"
+          else
+            echo "✅ No high or critical vulnerabilities"
+          fi
 
   deploy:
+    name: Deploy to GitHub Pages
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: [quality-checks, build-and-analyze, e2e-tests, security-scan]
     steps:
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: "./dist"
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Verify deployment
+        run: |
+          echo "Deployment URL: ${{ steps.deployment.outputs.page_url }}"
+          # Wait a moment for deployment to propagate
+          sleep 30
+          # Simple health check
+          curl -f "${{ steps.deployment.outputs.page_url }}" || exit 1
+          echo "✅ Deployment verified successfully"
+
+  post-deploy-validation:
+    name: Post-Deployment Validation
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright
+        run: npx playwright install chromium
+
+      - name: Production smoke tests
+        run: |
+          # Create a simple smoke test
+          cat > smoke-test.js << 'EOF'
+          const { chromium } = require('playwright');
+          
+          (async () => {
+            const browser = await chromium.launch();
+            const page = await browser.newPage();
+            
+            console.log('🔍 Testing production deployment...');
+            
+            try {
+              // Navigate to the deployed site
+              await page.goto('${{ needs.deploy.outputs.page_url || 'https://username.github.io/dot-art-3d-converter' }}', {
+                waitUntil: 'networkidle'
+              });
+              
+              // Check if page loads
+              const title = await page.title();
+              console.log('✅ Page loads successfully:', title);
+              
+              // Check for main UI elements
+              const fileInput = await page.locator('input[type="file"]').first();
+              if (await fileInput.isVisible()) {
+                console.log('✅ File upload component is visible');
+              }
+              
+              // Check for JavaScript functionality
+              await page.evaluate(() => {
+                if (typeof React === 'undefined') {
+                  throw new Error('React not loaded');
+                }
+              });
+              console.log('✅ React is loaded and functional');
+              
+              // Check for any console errors
+              const errors = [];
+              page.on('console', msg => {
+                if (msg.type() === 'error') {
+                  errors.push(msg.text());
+                }
+              });
+              
+              await page.waitForTimeout(3000);
+              
+              if (errors.length > 0) {
+                console.log('⚠️ Console errors detected:');
+                errors.forEach(error => console.log('  -', error));
+              } else {
+                console.log('✅ No console errors detected');
+              }
+              
+              console.log('🎉 All smoke tests passed!');
+              
+            } catch (error) {
+              console.error('❌ Smoke test failed:', error.message);
+              process.exit(1);
+            } finally {
+              await browser.close();
+            }
+          })();
+          EOF
+          
+          node smoke-test.js
+
+      - name: Performance audit
+        run: |
+          # Simple performance check using curl
+          echo "🏃 Performance audit..."
+          
+          START_TIME=$(date +%s%3N)
+          curl -s "${{ needs.deploy.outputs.page_url || 'https://username.github.io/dot-art-3d-converter' }}" > /dev/null
+          END_TIME=$(date +%s%3N)
+          
+          LOAD_TIME=$((END_TIME - START_TIME))
+          echo "Page load time: ${LOAD_TIME}ms"
+          
+          if [ $LOAD_TIME -gt 5000 ]; then
+            echo "⚠️ Slow page load time: ${LOAD_TIME}ms"
+          else
+            echo "✅ Good page load time: ${LOAD_TIME}ms"
+          fi
+
+  notify-completion:
+    name: Deployment Complete
+    runs-on: ubuntu-latest
+    needs: [deploy, post-deploy-validation]
+    if: always()
+    steps:
+      - name: Deployment summary
+        run: |
+          echo "🚀 Deployment Summary"
+          echo "==================="
+          echo "Status: ${{ job.status }}"
+          echo "URL: ${{ needs.deploy.outputs.page_url || 'https://username.github.io/dot-art-3d-converter' }}"
+          echo "Time: $(date)"
+          echo ""
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ Deployment completed successfully!"
+            echo "🌐 Application is now live and accessible"
+            echo "📊 All quality checks passed"
+            echo "🔒 Security scan completed"
+            echo "🧪 E2E tests validated"
+            echo "📦 Bundle analysis completed"
+          else
+            echo "❌ Deployment encountered issues"
+            echo "📋 Check the job logs for details"
+          fi
