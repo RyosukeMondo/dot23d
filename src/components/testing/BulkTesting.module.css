@@ -1,0 +1,621 @@
+.bulkTesting {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #24292f;
+}
+
+.modeSelector {
+  display: flex;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.modeButton {
+  padding: 8px 16px;
+  border: none;
+  background: white;
+  color: #656d76;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modeButton:hover {
+  background: #f8f9fa;
+}
+
+.modeButton.active {
+  background: #0969da;
+  color: white;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.bulkConfig,
+.sweepConfig {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.configSection {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectionHeader h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.selectionActions {
+  display: flex;
+  gap: 8px;
+}
+
+.actionButton {
+  padding: 4px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  background: white;
+  color: #656d76;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.actionButton:hover {
+  background: #f3f4f6;
+  color: #24292f;
+}
+
+.patternGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  gap: 8px;
+}
+
+.patternCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px;
+  border: 2px solid #d0d7de;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.patternCard:hover {
+  border-color: #8b949e;
+}
+
+.patternCard.selected {
+  border-color: #0969da;
+  background: #ddf4ff;
+}
+
+.patternPreview {
+  width: 40px;
+  height: 40px;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: #656d76;
+  margin-bottom: 4px;
+}
+
+.patternInfo {
+  text-align: center;
+}
+
+.patternSize {
+  font-size: 12px;
+  color: #656d76;
+}
+
+.presetList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.presetCard {
+  padding: 12px 16px;
+  border: 2px solid #d0d7de;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.presetCard:hover {
+  border-color: #8b949e;
+}
+
+.presetCard.selected {
+  border-color: #0969da;
+  background: #ddf4ff;
+}
+
+.presetName {
+  font-size: 14px;
+  font-weight: 500;
+  color: #24292f;
+}
+
+.configOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.checkbox input[type="checkbox"] {
+  margin: 0;
+}
+
+.configRow {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.configRow label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.numberInput {
+  padding: 4px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 80px;
+}
+
+.patternSelector {
+  margin-bottom: 16px;
+}
+
+.patternSelect {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.sweepSettings {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.paramSelect {
+  padding: 6px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+  min-width: 150px;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.startButton {
+  padding: 12px 24px;
+  border: 1px solid #2da44e;
+  border-radius: 6px;
+  background: #2da44e;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  align-self: center;
+}
+
+.startButton:hover:not(:disabled) {
+  background: #2c974b;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(45, 164, 78, 0.2);
+}
+
+.startButton:disabled {
+  background: #8b949e;
+  border-color: #8b949e;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.progressInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: #2da44e;
+  transition: width 0.3s ease;
+  border-radius: 4px;
+}
+
+.progressText {
+  font-size: 14px;
+  color: #656d76;
+  text-align: center;
+}
+
+.results {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.resultsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.resultsHeader h4 {
+  margin: 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.resultCount {
+  font-size: 14px;
+  color: #656d76;
+}
+
+.successChart {
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.chartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.chartHeader h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.successRate {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2da44e;
+}
+
+.successBar {
+  height: 100%;
+  background: #2da44e;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.chartStats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 12px;
+  color: #656d76;
+}
+
+.resultsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.resultCard {
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #d0d7de;
+  background: white;
+}
+
+.resultCard.success {
+  border-left-color: #2da44e;
+  background: #f6ffed;
+}
+
+.resultCard.failure {
+  border-left-color: #cf222e;
+  background: #fff5f5;
+}
+
+.resultHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.resultStatus {
+  font-size: 16px;
+}
+
+.resultId {
+  font-weight: 500;
+  color: #24292f;
+}
+
+.parameterValue {
+  font-size: 12px;
+  color: #656d76;
+  background: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 12px;
+}
+
+.resultDetails {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  color: #656d76;
+}
+
+.resultError {
+  margin-top: 8px;
+  padding: 8px;
+  background: #fff1f2;
+  border: 1px solid #fda4af;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #dc2626;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .modeSelector {
+    align-self: stretch;
+  }
+  
+  .patternGrid {
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  }
+  
+  .configRow {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .configRow label {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .numberInput {
+    width: 100%;
+  }
+  
+  .resultDetails {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .chartStats {
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .bulkTesting {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+  
+  .header {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .header h3 {
+    color: #e6edf3;
+  }
+  
+  .modeButton {
+    background: #21262d;
+    border-color: #30363d;
+    color: #8b949e;
+  }
+  
+  .modeButton:hover {
+    background: #30363d;
+    color: #e6edf3;
+  }
+  
+  .modeButton.active {
+    background: #58a6ff;
+    color: #0d1117;
+  }
+  
+  .sectionHeader h4 {
+    color: #e6edf3;
+  }
+  
+  .actionButton {
+    background: #21262d;
+    border-color: #30363d;
+    color: #8b949e;
+  }
+  
+  .actionButton:hover {
+    background: #30363d;
+    color: #e6edf3;
+  }
+  
+  .patternCard,
+  .presetCard {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .patternCard:hover,
+  .presetCard:hover {
+    border-color: #8b949e;
+  }
+  
+  .patternCard.selected,
+  .presetCard.selected {
+    border-color: #58a6ff;
+    background: #1f2937;
+  }
+  
+  .patternPreview {
+    background: #21262d;
+    border-color: #30363d;
+    color: #8b949e;
+  }
+  
+  .presetName {
+    color: #e6edf3;
+  }
+  
+  .configOptions {
+    background: #161b22;
+  }
+  
+  .checkbox {
+    color: #e6edf3;
+  }
+  
+  .numberInput,
+  .patternSelect,
+  .paramSelect {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .resultsHeader h4 {
+    color: #e6edf3;
+  }
+  
+  .successChart {
+    background: #161b22;
+  }
+  
+  .chartHeader h4 {
+    color: #e6edf3;
+  }
+  
+  .resultCard {
+    background: #161b22;
+  }
+  
+  .resultCard.success {
+    background: #0f1419;
+  }
+  
+  .resultCard.failure {
+    background: #1a0e13;
+  }
+  
+  .resultId {
+    color: #e6edf3;
+  }
+  
+  .parameterValue {
+    background: #21262d;
+    color: #8b949e;
+  }
+  
+  .resultError {
+    background: #2d1b1f;
+    border-color: #8b2635;
+    color: #f87171;
+  }
+}
