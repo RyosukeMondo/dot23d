@@ -1,0 +1,638 @@
+.modelComparison {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.header h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #24292f;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.viewControls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viewControls label {
+  font-size: 14px;
+  color: #656d76;
+  font-weight: 500;
+}
+
+.viewSelect {
+  padding: 4px 8px;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  font-size: 14px;
+  background: white;
+}
+
+.syncControls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.syncControls label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #656d76;
+  cursor: pointer;
+}
+
+.syncControls input[type="checkbox"] {
+  margin: 0;
+}
+
+.modelSelection {
+  padding: 16px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modelSelection h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.modelList {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modelCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #f6f8fa;
+  border: 2px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  min-width: 120px;
+}
+
+.modelCard:hover {
+  background: #e6f3ff;
+  border-color: #b6e2ff;
+}
+
+.modelCard.selected {
+  background: #ddf4ff;
+  border-color: #0969da;
+}
+
+.modelInfo h5 {
+  margin: 0 0 4px 0;
+  font-size: 12px;
+  color: #24292f;
+}
+
+.modelStats {
+  font-size: 10px;
+}
+
+.qualityScore {
+  color: #656d76;
+  font-weight: 500;
+}
+
+.selectedBadge {
+  width: 16px;
+  height: 16px;
+  background: #0969da;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.comparisonContent {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.sideBySide {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.modelsGrid {
+  display: grid;
+  gap: 16px;
+  align-items: start;
+}
+
+.modelContainer {
+  display: flex;
+  flex-direction: column;
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.modelHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: white;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.modelHeader h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.modelHeader h5 {
+  margin: 0;
+  font-size: 12px;
+  color: #24292f;
+}
+
+.quickStats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.score {
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.score.good {
+  background: #d1f4d9;
+  color: #116329;
+}
+
+.score.warning {
+  background: #fff8dc;
+  color: #bf8700;
+}
+
+.score.poor {
+  background: #ffebe9;
+  color: #cf222e;
+}
+
+.miniScore {
+  font-size: 10px;
+  color: #656d76;
+  font-weight: 500;
+}
+
+.modelViewerWrapper {
+  height: 300px;
+  position: relative;
+}
+
+.additionalModels {
+  margin-top: 16px;
+}
+
+.additionalModels h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.additionalModels .modelViewerWrapper {
+  height: 200px;
+}
+
+.statisticsView {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.statsOverview {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.statCard {
+  background: #f6f8fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+}
+
+.statCard h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #656d76;
+}
+
+.bestModel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.bestModel .score {
+  font-size: 14px;
+  color: #0969da;
+}
+
+.averageScore {
+  font-size: 18px;
+  font-weight: 600;
+  color: #24292f;
+}
+
+.scoreRange {
+  font-size: 16px;
+  font-weight: 500;
+  color: #24292f;
+}
+
+.differences h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: #24292f;
+}
+
+.differencesTable {
+  overflow-x: auto;
+}
+
+.differencesTable table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.differencesTable th,
+.differencesTable td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.differencesTable th {
+  background: #f6f8fa;
+  font-weight: 600;
+  color: #24292f;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.differencesTable tr:last-child td {
+  border-bottom: none;
+}
+
+.differencesTable tr.significance-high {
+  background: #ffebe9;
+}
+
+.differencesTable tr.significance-medium {
+  background: #fff8dc;
+}
+
+.differencesTable tr.significance-low {
+  background: #f0f9ff;
+}
+
+.metricName {
+  font-weight: 500;
+  color: #24292f;
+}
+
+.metricValue {
+  text-align: center;
+  font-weight: 500;
+}
+
+.significance {
+  text-align: center;
+  font-weight: 600;
+  font-size: 11px;
+}
+
+.significance.high {
+  color: #cf222e;
+}
+
+.significance.medium {
+  color: #bf8700;
+}
+
+.significance.low {
+  color: #0969da;
+}
+
+.recommendations {
+  background: #f6f8fa;
+  padding: 16px;
+  border-radius: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.recommendations h4 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #24292f;
+}
+
+.recommendations ul {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.recommendations li {
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #24292f;
+  line-height: 1.4;
+}
+
+.emptyState,
+.singleModelState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8b949e;
+  font-style: italic;
+  font-size: 16px;
+  padding: 32px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .syncControls {
+    justify-content: space-between;
+  }
+  
+  .modelList {
+    flex-direction: column;
+  }
+  
+  .modelsGrid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .modelViewerWrapper {
+    height: 250px;
+  }
+  
+  .additionalModels .modelViewerWrapper {
+    height: 200px;
+  }
+  
+  .statsOverview {
+    grid-template-columns: 1fr;
+  }
+  
+  .differencesTable {
+    font-size: 12px;
+  }
+  
+  .differencesTable th,
+  .differencesTable td {
+    padding: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .comparisonContent {
+    padding: 8px;
+  }
+  
+  .modelHeader {
+    padding: 8px 12px;
+  }
+  
+  .modelViewerWrapper {
+    height: 200px;
+  }
+  
+  .additionalModels .modelViewerWrapper {
+    height: 150px;
+  }
+  
+  .statCard {
+    padding: 12px;
+  }
+  
+  .sideBySide {
+    gap: 16px;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .modelComparison {
+    background: #0d1117;
+    border-color: #30363d;
+  }
+  
+  .header {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .header h3 {
+    color: #e6edf3;
+  }
+  
+  .viewSelect {
+    background: #21262d;
+    border-color: #30363d;
+    color: #e6edf3;
+  }
+  
+  .syncControls label {
+    color: #8b949e;
+  }
+  
+  .modelSelection {
+    border-color: #30363d;
+  }
+  
+  .modelSelection h4 {
+    color: #e6edf3;
+  }
+  
+  .modelCard {
+    background: #21262d;
+    border-color: transparent;
+  }
+  
+  .modelCard:hover {
+    background: #1c2128;
+    border-color: #388bfd26;
+  }
+  
+  .modelCard.selected {
+    background: #0d1929;
+    border-color: #58a6ff;
+  }
+  
+  .modelInfo h5 {
+    color: #e6edf3;
+  }
+  
+  .qualityScore {
+    color: #8b949e;
+  }
+  
+  .modelContainer {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .modelHeader {
+    background: #21262d;
+    border-color: #30363d;
+  }
+  
+  .modelHeader h4,
+  .modelHeader h5 {
+    color: #e6edf3;
+  }
+  
+  .miniScore {
+    color: #8b949e;
+  }
+  
+  .statCard {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .statCard h4 {
+    color: #8b949e;
+  }
+  
+  .bestModel,
+  .averageScore,
+  .scoreRange {
+    color: #e6edf3;
+  }
+  
+  .bestModel .score {
+    color: #58a6ff;
+  }
+  
+  .differences h4 {
+    color: #e6edf3;
+  }
+  
+  .differencesTable table {
+    background: #161b22;
+  }
+  
+  .differencesTable th {
+    background: #21262d;
+    color: #e6edf3;
+  }
+  
+  .differencesTable td {
+    border-color: #30363d;
+  }
+  
+  .differencesTable tr.significance-high {
+    background: #2d1b1f;
+  }
+  
+  .differencesTable tr.significance-medium {
+    background: #1a1a0e;
+  }
+  
+  .differencesTable tr.significance-low {
+    background: #0c1929;
+  }
+  
+  .metricName,
+  .metricValue {
+    color: #e6edf3;
+  }
+  
+  .significance.high {
+    color: #f85149;
+  }
+  
+  .significance.medium {
+    color: #d29922;
+  }
+  
+  .significance.low {
+    color: #58a6ff;
+  }
+  
+  .recommendations {
+    background: #161b22;
+    border-color: #30363d;
+  }
+  
+  .recommendations h4 {
+    color: #e6edf3;
+  }
+  
+  .recommendations li {
+    color: #e6edf3;
+  }
+  
+  .emptyState,
+  .singleModelState {
+    color: #8b949e;
+  }
+}
