@@ -1,5 +1,13 @@
 import React, { createContext, useContext, useReducer, type ReactNode } from 'react'
-import type { DotPattern, ConversionParams, Model3DParams } from '@/types'
+import type { 
+  DotPattern, 
+  ConversionParams, 
+  Model3DParams,
+  TestSession,
+  TestResult,
+  PerformanceMetrics,
+  ParameterPreset
+} from '@/types'
 
 // Define the application state
 export interface AppState {
@@ -24,6 +32,15 @@ export interface AppState {
   
   // Development/testing state
   isDevelopmentMode: boolean
+  
+  // Enhanced testing state
+  testSession: TestSession | null
+  testResults: TestResult[]
+  performanceMetrics: PerformanceMetrics[]
+  parameterPresets: ParameterPreset[]
+  activeTestId: string | null
+  testHistory: TestSession[]
+  isTestMode: boolean
 }
 
 export interface SessionEntry {
@@ -49,6 +66,21 @@ export type AppAction =
   | { type: 'CLEAR_SESSION_HISTORY' }
   | { type: 'RESET_STATE' }
   | { type: 'TOGGLE_DEVELOPMENT_MODE' }
+  // Enhanced testing actions
+  | { type: 'SET_TEST_SESSION'; payload: TestSession | null }
+  | { type: 'ADD_TEST_RESULT'; payload: TestResult }
+  | { type: 'UPDATE_TEST_RESULT'; payload: { id: string; result: Partial<TestResult> } }
+  | { type: 'CLEAR_TEST_RESULTS' }
+  | { type: 'ADD_PERFORMANCE_METRIC'; payload: PerformanceMetrics }
+  | { type: 'CLEAR_PERFORMANCE_METRICS' }
+  | { type: 'SET_PARAMETER_PRESETS'; payload: ParameterPreset[] }
+  | { type: 'ADD_PARAMETER_PRESET'; payload: ParameterPreset }
+  | { type: 'REMOVE_PARAMETER_PRESET'; payload: string }
+  | { type: 'SET_ACTIVE_TEST_ID'; payload: string | null }
+  | { type: 'ADD_TEST_HISTORY'; payload: TestSession }
+  | { type: 'CLEAR_TEST_HISTORY' }
+  | { type: 'TOGGLE_TEST_MODE' }
+  | { type: 'UPDATE_TEST_SESSION'; payload: Partial<TestSession> }
 
 // Default state
 const getDefaultConversionParams = (): ConversionParams => ({
@@ -95,7 +127,15 @@ const initialState: AppState = {
   isLoading: false,
   error: null,
   sessionHistory: [],
-  isDevelopmentMode: import.meta.env.DEV
+  isDevelopmentMode: import.meta.env.DEV,
+  // Enhanced testing state
+  testSession: null,
+  testResults: [],
+  performanceMetrics: [],
+  parameterPresets: [],
+  activeTestId: null,
+  testHistory: [],
+  isTestMode: false
 }
 
 // Reducer function
@@ -198,6 +238,97 @@ function appReducer(state: AppState, action: AppAction): AppState {
         isDevelopmentMode: !state.isDevelopmentMode
       }
 
+    // Enhanced testing actions
+    case 'SET_TEST_SESSION':
+      return {
+        ...state,
+        testSession: action.payload
+      }
+
+    case 'ADD_TEST_RESULT':
+      return {
+        ...state,
+        testResults: [action.payload, ...state.testResults]
+      }
+
+    case 'UPDATE_TEST_RESULT':
+      return {
+        ...state,
+        testResults: state.testResults.map(result =>
+          result.id === action.payload.id
+            ? { ...result, ...action.payload.result }
+            : result
+        )
+      }
+
+    case 'CLEAR_TEST_RESULTS':
+      return {
+        ...state,
+        testResults: []
+      }
+
+    case 'ADD_PERFORMANCE_METRIC':
+      return {
+        ...state,
+        performanceMetrics: [action.payload, ...state.performanceMetrics].slice(0, 1000) // Keep last 1000 metrics
+      }
+
+    case 'CLEAR_PERFORMANCE_METRICS':
+      return {
+        ...state,
+        performanceMetrics: []
+      }
+
+    case 'SET_PARAMETER_PRESETS':
+      return {
+        ...state,
+        parameterPresets: action.payload
+      }
+
+    case 'ADD_PARAMETER_PRESET':
+      return {
+        ...state,
+        parameterPresets: [...state.parameterPresets, action.payload]
+      }
+
+    case 'REMOVE_PARAMETER_PRESET':
+      return {
+        ...state,
+        parameterPresets: state.parameterPresets.filter(preset => preset.id !== action.payload)
+      }
+
+    case 'SET_ACTIVE_TEST_ID':
+      return {
+        ...state,
+        activeTestId: action.payload
+      }
+
+    case 'ADD_TEST_HISTORY':
+      return {
+        ...state,
+        testHistory: [action.payload, ...state.testHistory].slice(0, 20) // Keep last 20 sessions
+      }
+
+    case 'CLEAR_TEST_HISTORY':
+      return {
+        ...state,
+        testHistory: []
+      }
+
+    case 'TOGGLE_TEST_MODE':
+      return {
+        ...state,
+        isTestMode: !state.isTestMode
+      }
+
+    case 'UPDATE_TEST_SESSION':
+      return {
+        ...state,
+        testSession: state.testSession
+          ? { ...state.testSession, ...action.payload }
+          : null
+      }
+
     default:
       return state
   }
@@ -221,6 +352,22 @@ export interface AppContextType {
   clearSessionHistory: () => void
   resetState: () => void
   toggleDevelopmentMode: () => void
+  
+  // Enhanced testing methods
+  setTestSession: (session: TestSession | null) => void
+  addTestResult: (result: TestResult) => void
+  updateTestResult: (id: string, result: Partial<TestResult>) => void
+  clearTestResults: () => void
+  addPerformanceMetric: (metric: PerformanceMetrics) => void
+  clearPerformanceMetrics: () => void
+  setParameterPresets: (presets: ParameterPreset[]) => void
+  addParameterPreset: (preset: ParameterPreset) => void
+  removeParameterPreset: (id: string) => void
+  setActiveTestId: (id: string | null) => void
+  addTestHistory: (session: TestSession) => void
+  clearTestHistory: () => void
+  toggleTestMode: () => void
+  updateTestSession: (updates: Partial<TestSession>) => void
 }
 
 // Create context
@@ -283,6 +430,63 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     dispatch({ type: 'TOGGLE_DEVELOPMENT_MODE' })
   }
 
+  // Enhanced testing methods
+  const setTestSession = (session: TestSession | null) => {
+    dispatch({ type: 'SET_TEST_SESSION', payload: session })
+  }
+
+  const addTestResult = (result: TestResult) => {
+    dispatch({ type: 'ADD_TEST_RESULT', payload: result })
+  }
+
+  const updateTestResult = (id: string, result: Partial<TestResult>) => {
+    dispatch({ type: 'UPDATE_TEST_RESULT', payload: { id, result } })
+  }
+
+  const clearTestResults = () => {
+    dispatch({ type: 'CLEAR_TEST_RESULTS' })
+  }
+
+  const addPerformanceMetric = (metric: PerformanceMetrics) => {
+    dispatch({ type: 'ADD_PERFORMANCE_METRIC', payload: metric })
+  }
+
+  const clearPerformanceMetrics = () => {
+    dispatch({ type: 'CLEAR_PERFORMANCE_METRICS' })
+  }
+
+  const setParameterPresets = (presets: ParameterPreset[]) => {
+    dispatch({ type: 'SET_PARAMETER_PRESETS', payload: presets })
+  }
+
+  const addParameterPreset = (preset: ParameterPreset) => {
+    dispatch({ type: 'ADD_PARAMETER_PRESET', payload: preset })
+  }
+
+  const removeParameterPreset = (id: string) => {
+    dispatch({ type: 'REMOVE_PARAMETER_PRESET', payload: id })
+  }
+
+  const setActiveTestId = (id: string | null) => {
+    dispatch({ type: 'SET_ACTIVE_TEST_ID', payload: id })
+  }
+
+  const addTestHistory = (session: TestSession) => {
+    dispatch({ type: 'ADD_TEST_HISTORY', payload: session })
+  }
+
+  const clearTestHistory = () => {
+    dispatch({ type: 'CLEAR_TEST_HISTORY' })
+  }
+
+  const toggleTestMode = () => {
+    dispatch({ type: 'TOGGLE_TEST_MODE' })
+  }
+
+  const updateTestSession = (updates: Partial<TestSession>) => {
+    dispatch({ type: 'UPDATE_TEST_SESSION', payload: updates })
+  }
+
   const contextValue: AppContextType = {
     state,
     dispatch,
@@ -297,7 +501,22 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     addSessionEntry,
     clearSessionHistory,
     resetState,
-    toggleDevelopmentMode
+    toggleDevelopmentMode,
+    // Enhanced testing methods
+    setTestSession,
+    addTestResult,
+    updateTestResult,
+    clearTestResults,
+    addPerformanceMetric,
+    clearPerformanceMetrics,
+    setParameterPresets,
+    addParameterPreset,
+    removeParameterPreset,
+    setActiveTestId,
+    addTestHistory,
+    clearTestHistory,
+    toggleTestMode,
+    updateTestSession
   }
 
   return (
